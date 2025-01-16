@@ -195,10 +195,10 @@ let name = "Marcel Schnideritsch";
         identitiesOnly = true;
         identityFile = [
           (lib.mkIf pkgs.stdenv.hostPlatform.isLinux
-            "/home/${user}/.ssh/id_github"
+            "/home/${user}/.ssh/id_ed25519"
           )
           (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin
-            "/Users/${user}/.ssh/id_github"
+            "/Users/${user}/.ssh/id_ed25519"
           )
         ];
       };

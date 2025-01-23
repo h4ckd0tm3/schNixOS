@@ -40,6 +40,16 @@ in
     # https://github.com/koekeishiya/skhd/issues/1
     skhdConfig = ''
       ## Navigation (lalt - ...)
+      # Create a new space: lalt + n
+      lalt - n : yabai -m space --create
+
+      # Move to previous/next space: lalt - {i, o}
+      lalt - i : yabai -m space --focus prev
+      lalt - o : yabai -m space --focus next
+
+      # Delete the current space: lalt + w
+      lalt - w : yabai -m space --destroy
+
       # Space Navigation (four spaces per display): lalt - {1, 2, 3, 4}
       lalt - 1 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[1] ]] && yabai -m space --focus $SPACES[1]
       lalt - 2 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[2] ]] && yabai -m space --focus $SPACES[2]

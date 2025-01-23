@@ -3,6 +3,7 @@ _:
 [
 ### Terminals & Browsers
 "brave-browser"
+"google-chrome"
 "kitty"
 
 ### Pentest

@@ -92,6 +92,11 @@ let name = "Marcel Schnideritsch";
 
         export XDG_CONFIG_HOME="$HOME/.config"
 
+        export WORKON_HOME=$HOME/.virtualenvs
+        export PROJECT_HOME=$HOME/Devel
+        export VIRTUALENVWRAPPER_SCRIPT=/opt/homebrew/opt/virtualenvwrapper/bin/virtualenvwrapper.sh
+        source /opt/homebrew/opt/virtualenvwrapper/bin/virtualenvwrapper_lazy.sh
+
         # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
         [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
       '';

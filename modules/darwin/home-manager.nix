@@ -41,7 +41,7 @@ in
     skhdConfig = ''
       ## Navigation (lalt - ...)
       # Create a new space: lalt + n
-      lalt - n : yabai -m space --create
+      lalt - n : yabai -m space --create; yabai -m space --focus last
 
       # Move to previous/next space: lalt - {i, o}
       lalt - i : yabai -m space --focus prev

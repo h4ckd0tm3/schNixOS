@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 
 {
-  #".emacs.d/init.el" = {
-  #  text = builtins.readFile ../shared/config/emacs/init.el;
-  #};
+  ".config/kitty/macos-launch-services-cmdline" = {
+    text = "--listen-on unix:/tmp/mykitty.sock";
+  };
 }

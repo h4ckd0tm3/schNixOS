@@ -1,29 +1,35 @@
 { pkgs }:
 
 with pkgs; [
-  # General packages for development and system management
-  bat
-  btop
-  coreutils
-  killall
-  neofetch
-  openssh
-  sqlite
-  wget
-  zip
-  lsd
-  lazygit
+  ### System Utilities
+  "bat"
+  "btop"
+  "coreutils"
+  "killall"
+  "neofetch"
+  "openssh"
+  "wget"
+  "zip"
 
-  # Text and terminal utilities
-  htop
-  iftop
-  jq
-  tree
-  unrar
-  unzip
-  zsh-powerlevel10k
+  ### Development Tools
+  "sqlite"
+  "lazygit"
 
-  # Python packages
-  python3
-  virtualenv
+  ### Terminal Enhancements
+  "lsd"
+  "tree"
+  "zsh-powerlevel10k"
+
+  ### Monitoring & Network
+  "htop"
+  "iftop"
+
+  ### Data Processing & CLI Tools
+  "jq"
+  "unrar"
+  "unzip"
+
+  ### Python Packages
+  "python3"
+  "virtualenv"
 ]

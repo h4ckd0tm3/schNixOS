@@ -1,44 +1,54 @@
 _:
-
 [
-### Terminals & Browsers
+### Browsers & Terminals
 "brave-browser"
 "google-chrome"
 "kitty"
 
-### Pentest
-"burp-suite-professional"
+### IDEs
+"android-studio"
+"goland"
+"pycharm"
+"rustrover"
+"visual-studio-code"
 
-### Messenger
+### Development Tools
+"docker"
+
+### Fonts
+"font-fira-code"
+"font-hack-nerd-font"
+"font-jetbrains-mono"
+"sf-symbols"
+
+### Messaging & Communication
 "discord"
+"microsoft-teams"
+"readdle-spark" # E-Mail
 "signal"
 "telegram"
 "whatsapp"
-"readdle-spark" # E-Mail
-"microsoft-teams"
 
-### Reversing
-"machoview"
+### Pentesting & Security
+"burp-suite-professional"
+
+### Reverse Engineering
 "hex-fiend"
+"machoview"
 
-### IDE's
-"pycharm"
-"goland"
-"rustrover"
+### Password Management
+"1password"
+"1password-cli"
 
-
-### Nice to have
+### Utilities
 "alfred"
-"spotify"
-"visual-studio-code"
-"microsoft-office"
 "desktoppr"
-"docker"
-"chatgpt"
+"logi-options+"
 
-### Fonts
-"sf-symbols"
-"font-hack-nerd-font"
-"font-jetbrains-mono"
-"font-fira-code"
+### Productivity
+"chatgpt"
+"microsoft-office"
+
+### Media & Entertainment
+"spotify"
 ]

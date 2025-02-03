@@ -97,6 +97,8 @@ let name = "Marcel Schnideritsch";
         export VIRTUALENVWRAPPER_SCRIPT=/opt/homebrew/opt/virtualenvwrapper/bin/virtualenvwrapper.sh
         source /opt/homebrew/opt/virtualenvwrapper/bin/virtualenvwrapper_lazy.sh
 
+        export PATH="/Users/schni/Documents/flutter/bin:$PATH"
+
         # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
         [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
       '';
@@ -129,6 +131,7 @@ let name = "Marcel Schnideritsch";
       "cmd+right" = "send_text all \\x05";
     };
     settings = {
+      allow_remote_control = "yes";
       bold_font        = "Hack Nerd Font Mono Bold";
       italic_font      = "Hack Nerd Font Mono Italic";
       bold_italic_font = "Hack Nerd Font Mono Bold Italic";

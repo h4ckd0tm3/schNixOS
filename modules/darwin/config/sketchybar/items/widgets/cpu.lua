@@ -33,7 +33,7 @@ local cpu = sbar.add("graph", "widgets.cpu" , 42, {
 
 cpu:subscribe("cpu_update", function(env)
   -- Also available: env.user_load, env.sys_load
-  local load = tonumber(env.total_load)
+  local load = math.min(tonumber(env.total_load), 100)
   cpu:push({ load / 100. })
 
   local color = colors.blue

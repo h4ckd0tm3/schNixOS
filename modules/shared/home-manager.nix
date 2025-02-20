@@ -183,6 +183,19 @@ let name = "Marcel Schnideritsch";
       };
       pull.rebase = true;
       rebase.autoStash = true;
+      gpg = {
+        format = "ssh";
+      };
+      "gpg \"ssh\"" = {
+        program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
+      };
+      commit = {
+        gpgsign = true;
+      };
+
+      user = {
+        signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFtij4eh2WgT5OLTDzjGSixe+JEx9UUhh4dFIKdojghL";
+      };
     };
   };
 
@@ -190,6 +203,10 @@ let name = "Marcel Schnideritsch";
 
   ssh = {
     enable = true;
+    extraConfig = ''
+      Host *
+        IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+    '';
     includes = [
       (lib.mkIf pkgs.stdenv.hostPlatform.isLinux
         "/home/${user}/.ssh/config_external"
@@ -198,18 +215,42 @@ let name = "Marcel Schnideritsch";
         "/Users/${user}/.ssh/config_external"
       )
     ];
-    matchBlocks = {
-      "github.com" = {
-        identitiesOnly = true;
-        identityFile = [
-          (lib.mkIf pkgs.stdenv.hostPlatform.isLinux
-            "/home/${user}/.ssh/id_ed25519"
-          )
-          (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin
-            "/Users/${user}/.ssh/id_ed25519"
-          )
-        ];
-      };
+matchBlocks = {
+    "nyx" = {
+      user = "root";
+      hostname = "149.154.152.151";
+      port = 22;
     };
+
+    "cloudia" = {
+      user = "schni";
+      hostname = "45.142.176.14";
+      port = 22;
+    };
+
+    "allinkl" = {
+      user = "ssh-w012e3e5";
+      hostname = "85.13.161.85";
+      port = 22;
+    };
+
+    "git.losfuzzys.net" = {
+      user = "git";
+      hostname = "git.losfuzzys.net";
+      port = 22222;
+    };
+
+    "losserver" = {
+      user = "admin";
+      hostname = "188.68.41.88";
+      port = 22;
+    };
+
+    "acsc-pve" = {
+      user = "root";
+      hostname = "167.235.95.92";
+      port = 22;
+    };
+  };
   };
 }

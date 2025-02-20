@@ -8,8 +8,6 @@ let user = "schni"; in
     ../../modules/shared
   ];
 
-  services.nix-daemon.enable = true;
-
   nix = {
     package = pkgs.nix;
     settings = {
@@ -19,7 +17,6 @@ let user = "schni"; in
     };
 
     gc = {
-      user = "root";
       automatic = true;
       interval = { Weekday = 0; Hour = 2; Minute = 0; };
       options = "--delete-older-than 30d";
@@ -35,8 +32,13 @@ let user = "schni"; in
   environment.systemPackages = with pkgs; [
   ] ++ (import ../../modules/shared/packages.nix { inherit pkgs; });
 
+  fonts.packages = with pkgs; [
+    fira-math
+    berkeley-mono
+  ];
+
   system = {
-    stateVersion = 4;
+    stateVersion = 5;
 
     defaults = {
       NSGlobalDomain = {

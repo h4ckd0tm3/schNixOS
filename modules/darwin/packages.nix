@@ -6,20 +6,22 @@ let
 in
 shared-packages ++ [
   ### Window & UI Management
-  "dockutil"
-  "sketchybar"
-  "sketchybar-app-font"
-  "jankyborders"
-  "yabai"
+  dockutil
+  sketchybar
+  sketchybar-app-font
+  jankyborders
+  yabai
 
   ### Keybinding & Automation
-  "skhd"
+  skhd
 
   ### Audio Utilities
-  "switchaudio-osx"
-  "nowplaying-cli"
+  switchaudio-osx
+  nowplaying-cli
 
   ### Development Tools
-  "lua54Packages.lua"
-  "cocoapods"
+  lua54Packages.lua
+  cocoapods
+  go
+  rustup
 ]

@@ -1,6 +1,7 @@
 _:
 [
 ### Browsers & Terminals
+"arc"
 "brave-browser"
 "google-chrome"
 "kitty"
@@ -31,6 +32,8 @@ _:
 
 ### Pentesting & Security
 "burp-suite-professional"
+"redis-insight"
+"ngrok"
 
 ### Reverse Engineering
 "hex-fiend"
@@ -41,9 +44,13 @@ _:
 "1password-cli"
 
 ### Utilities
+"adobe-acrobat-pro"
+"adobe-creative-cloud"
 "alfred"
 "desktoppr"
+"downie"
 "logi-options+"
+"wifiman"
 
 ### Productivity
 "chatgpt"

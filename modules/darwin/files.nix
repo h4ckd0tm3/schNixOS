@@ -33,4 +33,8 @@ in
   "${xdg_configHome}/sketchybar/helpers/event_providers/cpu_load/bin/cpu_load".source = "${binaries.cpuLoadBinary}/bin/cpu_load";
   "${xdg_configHome}/sketchybar/helpers/event_providers/network_load/bin/network_load".source = "${binaries.networkLoadBinary}/bin/network_load";
   "${xdg_configHome}/sketchybar/helpers/menus/bin/menus".source = "${binaries.menusBinary}/bin/menus";
+
+  ".config/kitty/macos-launch-services-cmdline" = {
+    text = "--listen-on unix:/tmp/mykitty.sock";
+  };
 }

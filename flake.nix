@@ -1,5 +1,5 @@
 {
-  description = "Schni's Nix Config for Mac";
+  description = "Schni's Nix Config";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -34,8 +34,9 @@
   outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, nixpkgs, disko, catppuccin } @inputs:
     let
       user = "schni";
+      linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
       darwinSystems = [ "aarch64-darwin" "x86_64-darwin" ];
-      forAllSystems = f: nixpkgs.lib.genAttrs (darwinSystems) f;
+      forAllSystems = f: nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) f;
       devShell = system: let pkgs = nixpkgs.legacyPackages.${system}; in {
         default = with pkgs; mkShell {
           nativeBuildInputs = with pkgs; [ bashInteractive git ];
@@ -53,6 +54,15 @@
           exec ${self}/apps/${system}/${scriptName}
         '')}/bin/${scriptName}";
       };
+      mkLinuxApps = system: {
+        "apply" = mkApp "apply" system;
+        "build-switch" = mkApp "build-switch" system;
+        "copy-keys" = mkApp "copy-keys" system;
+        "create-keys" = mkApp "create-keys" system;
+        "check-keys" = mkApp "check-keys" system;
+        "install" = mkApp "install" system;
+        "install-with-secrets" = mkApp "install-with-secrets" system;
+      };
       mkDarwinApps = system: {
         "apply" = mkApp "apply" system;
         "build" = mkApp "build" system;
@@ -65,7 +75,7 @@
     in
     {
       devShells = forAllSystems devShell;
-      apps = nixpkgs.lib.genAttrs darwinSystems mkDarwinApps;
+      apps = nixpkgs.lib.genAttrs linuxSystems mkLinuxApps // nixpkgs.lib.genAttrs darwinSystems mkDarwinApps;
 
       darwinConfigurations = nixpkgs.lib.genAttrs darwinSystems (system: let
         user = "schni";
@@ -93,5 +103,22 @@
           ];
         }
       );
+
+      wslConfigurations = nixpkgs.lib.genAttrs linuxSystems (system:
+      nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = inputs;
+        modules = [
+          home-manager.nixosModules.home-manager {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.${user} = import ./modules/wsl/home-manager.nix;
+            };
+          }
+          ./hosts/wsl
+        ];
+      }
+    );
   };
 }

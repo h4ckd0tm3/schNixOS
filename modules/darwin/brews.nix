@@ -1,5 +1,7 @@
 _:
 
-[
+[ 
+  "navi"
+  "semgrep"
   "virtualenvwrapper"
 ]

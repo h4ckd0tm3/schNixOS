@@ -2,7 +2,6 @@
 
 with pkgs; [
   ### System Utilities
-  bat
   btop
   coreutils
   killall
@@ -27,6 +26,7 @@ with pkgs; [
 
   ### Data Processing & CLI Tools
   jq
+  yq-go
   unrar
   unzip
 

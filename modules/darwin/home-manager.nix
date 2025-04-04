@@ -1,4 +1,4 @@
-{ config, pkgs, lib, home-manager, ... }:
+{ config, pkgs, lib, home-manager, catppuccin, ... }:
 
 let
   user = "schni";
@@ -202,6 +202,11 @@ in
       # Marked broken Oct 20, 2022 check later to remove this
       # https://github.com/nix-community/home-manager/issues/3344
       manual.manpages.enable = false;
+      catppuccin.flavor = "mocha";
+      catppuccin.enable = true;
+      imports = [
+        catppuccin.homeManagerModules.catppuccin
+      ];
     };
   };
 

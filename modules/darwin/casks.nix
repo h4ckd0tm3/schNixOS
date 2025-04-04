@@ -1,5 +1,7 @@
 _:
 [
+"wireshark"
+
 ### Browsers & Terminals
 "arc"
 "brave-browser"
@@ -14,6 +16,7 @@ _:
 "visual-studio-code"
 
 ### Development Tools
+"balenaetcher"
 "docker"
 
 ### Fonts

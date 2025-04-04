@@ -13,7 +13,17 @@ let name = "Marcel Schnideritsch";
   fzf = {
     enable = true;
     enableZshIntegration = true;
-    defaultOptions = ["--color=dark --color=fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#ffaf5f --color=info:#af87ff,prompt:#5fff87,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7"];
+    defaultOptions = [
+      "--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8"
+      "--color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc"
+      "--color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
+      "--color=selected-bg:#45475a"
+      "--multi"
+    ];
+  };
+
+  bat = {
+    enable = true;
   };
 
   zsh = {
@@ -55,11 +65,13 @@ let name = "Marcel Schnideritsch";
         alias egrep='egrep --color=auto'
         alias diff='diff --color=auto'
 
-        alias cat='bat --theme Dracula'
+        alias cat='bat'
         alias ssh="TERM=xterm-256color ssh"
 
 
         command -v lsd &> /dev/null && alias ls='lsd --group-dirs first'
+        
+        eval "$(navi widget zsh)"
 
         function mkcd() {
                 mkdir -p "$1" && cd "$1"
@@ -80,13 +92,13 @@ let name = "Marcel Schnideritsch";
                 if [ -d "$file" ]; then
                     file_name="$file_name.zip"
                     ,
-                    (cd "$file" && zip -r -q - .) | curl --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy,
+                    (cd "$file" && zip -r -q - .) | curl -u xxx:xxx --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy,
                 else
-                    cat "$file" | curl --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy
+                    cat "$file" | curl -u xxx:xxx --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy
                 fi
             else
                 file_name=$1
-                curl --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy
+                curl -u xxx:xxx --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy
             fi
         }
 

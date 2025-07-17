@@ -205,13 +205,14 @@ in
       catppuccin.flavor = "mocha";
       catppuccin.enable = true;
       imports = [
-        catppuccin.homeManagerModules.catppuccin
+        catppuccin.homeModules.catppuccin
       ];
     };
   };
 
   # Fully declarative dock using the latest from Nix Store
   local.dock.enable = true;
+  local.dock.username = user;
   local.dock.entries = [
     { path = "${pkgs.kitty}/Applications/Kitty.app/"; }
     {

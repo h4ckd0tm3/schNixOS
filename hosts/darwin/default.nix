@@ -29,6 +29,8 @@ let user = "schni"; in
 
   system.checks.verifyNixPath = false;
 
+  system.primaryUser = user;
+
   environment.systemPackages = with pkgs; [
   ] ++ (import ../../modules/shared/packages.nix { inherit pkgs; });
 
@@ -117,11 +119,11 @@ let user = "schni"; in
     };
   };
 
-  system.activationScripts.postUserActivation.text = ''
+  system.activationScripts.postActivation.text = ''
     # activateSettings -u will reload the settings from the database and apply them to the current session,
     # so we do not need to logout and login again to make the changes take effect.
     /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
-    /usr/local/bin/desktoppr all "/Users/schni/nixos-config/hosts/wallpapers/arle.jpeg"
+    /usr/local/bin/desktoppr all "/Users/schni/nixos-config/hosts/wallpapers/mostwanted.png"
   '';
 }

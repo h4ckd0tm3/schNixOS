@@ -1,11 +1,9 @@
 _:
 [
-"wireshark"
+"ultrastardeluxe"
 
 ### Browsers & Terminals
-"arc"
 "brave-browser"
-"google-chrome"
 "kitty"
 
 ### IDEs
@@ -16,8 +14,11 @@ _:
 "visual-studio-code"
 
 ### Development Tools
+"cmake"
 "balenaetcher"
 "docker"
+"docker-desktop"
+"insomnia"
 
 ### Fonts
 "font-fira-code"
@@ -54,6 +55,7 @@ _:
 "downie"
 "logi-options+"
 "wifiman"
+"rize"
 
 ### Productivity
 "chatgpt"
@@ -61,4 +63,5 @@ _:
 
 ### Media & Entertainment
 "spotify"
+"steam"
 ]

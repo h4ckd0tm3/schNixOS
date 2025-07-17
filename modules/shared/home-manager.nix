@@ -49,7 +49,7 @@ let name = "Marcel Schnideritsch";
         ENABLE_CORRECTION="true"
       '';
     };
-    initExtra = ''
+    initContent = ''
       if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
         . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
         . /nix/var/nix/profiles/default/etc/profile.d/nix.sh
@@ -92,13 +92,13 @@ let name = "Marcel Schnideritsch";
                 if [ -d "$file" ]; then
                     file_name="$file_name.zip"
                     ,
-                    (cd "$file" && zip -r -q - .) | curl -u xxx:xxx --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy,
+                    (cd "$file" && zip -r -q - .) | curl -u zippy:zippy --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy,
                 else
-                    cat "$file" | curl -u xxx:xxx --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy
+                    cat "$file" | curl -u zippy:zippy --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy
                 fi
             else
                 file_name=$1
-                curl -u xxx:xxx --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy
+                curl -u zippy:zippy --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy
             fi
         }
 

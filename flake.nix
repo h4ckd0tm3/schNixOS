@@ -10,7 +10,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-homebrew = {
-      url = "github:zhaofengli-wip/nix-homebrew";
+      url = "github:zhaofengli/nix-homebrew";
     };
     homebrew-bundle = {
       url = "github:homebrew/homebrew-bundle";
@@ -24,14 +24,9 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, nixpkgs, disko, catppuccin } @inputs:
+  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, nixpkgs, catppuccin } @inputs:
     let
       user = "schni";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];

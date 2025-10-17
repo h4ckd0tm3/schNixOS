@@ -11,17 +11,17 @@ self: super: with super;  {
       sha256 = "sha256-F0UfNxHM389GhiPQ6/GFbeKQq5EvpiqQdvyf7ygzkPg=";
     };
 
-    buildInputs = with pkgs;
-    [
-      gcc
-      readline
-    ]
-    ++ lib.optionals stdenv.hostPlatform.isDarwin [
-      darwin.apple_sdk.frameworks.CoreFoundation
-    ];
+    nativeBuildInputs = with pkgs; [clang gnumake];
+    buildInputs = with pkgs; [readline gcc];
+
+    NIX_LDFLAGS =
+      lib.optionalString stdenv.hostPlatform.isDarwin
+      "-framework CoreFoundation";
+
+    makeFlags = lib.optionals stdenv.hostPlatform.isDarwin ["CC=cc"];
 
     buildPhase = ''
-        make bin/sketchybar.so
+      make bin/sketchybar.so
     '';
     
     installPhase = ''

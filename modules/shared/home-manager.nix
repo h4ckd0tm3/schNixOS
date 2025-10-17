@@ -215,6 +215,7 @@ let name = "Marcel Schnideritsch";
 
   ssh = {
     enable = true;
+    enableDefaultConfig = false;
     extraConfig = ''
       Host *
         IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
@@ -228,6 +229,12 @@ let name = "Marcel Schnideritsch";
       )
     ];
 matchBlocks = {
+    "*" = {
+        # Set the default values we want to keep
+        sendEnv = [ "LANG" "LC_*" ];
+        hashKnownHosts = true;
+    };
+    
     "nyx" = {
       user = "root";
       hostname = "149.154.152.151";

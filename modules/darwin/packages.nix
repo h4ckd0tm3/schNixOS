@@ -5,23 +5,26 @@ let
   shared-packages = import ../shared/packages.nix { inherit pkgs; };
 in
 shared-packages ++ [
-  ### Window & UI Management
-  dockutil
-  sketchybar
-  sketchybar-app-font
-  jankyborders
-  yabai
+  ### Window Management
+  jankyborders # Window border styling
+  yabai # Tiling window manager
 
-  ### Keybinding & Automation
-  skhd
+  ### Status Bar & UI
+  sketchybar # Customizable status bar
+  sketchybar-app-font # Font for sketchybar app icons
 
-  ### Audio Utilities
-  switchaudio-osx
-  nowplaying-cli
+  ### macOS System Utilities
+  dockutil # Dock management CLI
+  skhd # Hotkey daemon
+  switchaudio-osx # Audio device switching
+  nowplaying-cli # Media info CLI
 
   ### Development Tools
-  lua54Packages.lua
-  cocoapods
-  go
-  rustup
+  pre-commit # Git pre-commit hooks
+
+  ### Programming Languages & Runtimes
+  cocoapods # iOS/macOS dependency manager
+  go # Go programming language
+  lua54Packages.lua # Lua scripting language
+  rustup # Rust toolchain installer
 ]

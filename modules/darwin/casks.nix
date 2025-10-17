@@ -1,9 +1,9 @@
 _:
 [
-"ultrastardeluxe"
-
-### Browsers & Terminals
+### Browsers
 "brave-browser"
+
+### Terminals
 "kitty"
 
 ### IDEs
@@ -15,16 +15,24 @@ _:
 
 ### Development Tools
 "cmake"
-"balenaetcher"
 "docker"
 "docker-desktop"
 "insomnia"
+
+### AI Tools
+"chatgpt"
+"claude"
 
 ### Fonts
 "font-fira-code"
 "font-hack-nerd-font"
 "font-jetbrains-mono"
+"font-noto-sans"
 "sf-symbols"
+
+### Password Management
+"1password"
+"1password-cli"
 
 ### Messaging & Communication
 "discord"
@@ -34,34 +42,33 @@ _:
 "telegram"
 "whatsapp"
 
+### Productivity
+"microsoft-office"
+
+### Adobe Products
+"adobe-acrobat-pro"
+"adobe-creative-cloud"
+
 ### Pentesting & Security
 "burp-suite-professional"
-"redis-insight"
 "ngrok"
+"redis-insight"
 
 ### Reverse Engineering
 "hex-fiend"
 "machoview"
 
-### Password Management
-"1password"
-"1password-cli"
-
 ### Utilities
-"adobe-acrobat-pro"
-"adobe-creative-cloud"
 "alfred"
+"balenaetcher"
 "desktoppr"
 "downie"
 "logi-options+"
-"wifiman"
 "rize"
-
-### Productivity
-"chatgpt"
-"microsoft-office"
+"wifiman"
 
 ### Media & Entertainment
 "spotify"
 "steam"
+"ultrastardeluxe"
 ]

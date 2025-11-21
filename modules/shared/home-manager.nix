@@ -67,7 +67,7 @@ let name = "Marcel Schnideritsch";
 
         alias cat='bat'
         alias ssh="TERM=xterm-256color ssh"
-
+        alias hammertime="NIXPKGS_ALLOW_UNFREE=1 nix-shell -p '(import (fetchTarball "https://github.com/nix-community/NUR/archive/main.tar.gz") { pkgs = import <nixpkgs> {}; }).repos.nodezeroat.hammer'"
 
         command -v lsd &> /dev/null && alias ls='lsd --group-dirs first'
         

@@ -35,7 +35,6 @@ let user = "schni"; in
   ] ++ (import ../../modules/shared/packages.nix { inherit pkgs; });
 
   fonts.packages = with pkgs; [
-    fira-math
     berkeley-mono
   ];
 

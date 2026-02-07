@@ -182,16 +182,18 @@ let name = "Marcel Schnideritsch";
   git = {
     enable = true;
     ignores = [ "*.swp" ];
-    userName = name;
-    userEmail = email;
     lfs = {
       enable = true;
     };
-    extraConfig = {
+    settings = {
       init.defaultBranch = "main";
       core = {
 	    editor = "vim";
         autocrlf = "input";
+      };
+      user = {
+        name = name;
+        email = email;
       };
       pull.rebase = true;
       rebase.autoStash = true;

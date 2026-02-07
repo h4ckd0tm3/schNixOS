@@ -177,7 +177,7 @@ in
     masApps = {
       "wireguard" = 1451685025;
       "xcode" = 497799835;
-      "Microsoft Remote Desktop" = 1295203466;
+      #"Microsoft Remote Desktop" = 1295203466;
     };
   };
 

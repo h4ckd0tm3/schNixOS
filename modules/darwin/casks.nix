@@ -14,10 +14,10 @@ _:
 "visual-studio-code"
 
 ### Development Tools
-"cmake"
-"docker"
+"cmake-app"
 "docker-desktop"
 "insomnia"
+"lens"
 
 ### AI Tools
 "chatgpt"
@@ -51,7 +51,7 @@ _:
 
 ### Pentesting & Security
 "burp-suite-professional"
-"ngrok"
+#"ngrok"
 "redis-insight"
 
 ### Reverse Engineering

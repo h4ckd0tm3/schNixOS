@@ -14,4 +14,6 @@ _:
 ### Utilities
 "mas" # Mac App Store CLI
 "navi" # Interactive cheatsheet tool
+
+"azure-cli"
 ]

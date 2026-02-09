@@ -8,9 +8,6 @@ _:
 
 ### IDEs
 "android-studio"
-"goland"
-"pycharm"
-"rustrover"
 "visual-studio-code"
 
 ### Development Tools
@@ -22,6 +19,7 @@ _:
 ### AI Tools
 "chatgpt"
 "claude"
+"claude-code"
 
 ### Fonts
 "font-fira-code"

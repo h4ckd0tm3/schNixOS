@@ -16,4 +16,5 @@ _:
 "navi" # Interactive cheatsheet tool
 
 "azure-cli"
+"gemini-cli"
 ]

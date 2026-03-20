@@ -5,7 +5,7 @@ with pkgs; [
   btop
   coreutils
   killall
-  neofetch
+  fastfetch
   openssh
   wget
   zip

@@ -20,6 +20,9 @@ _:
 "chatgpt"
 "claude"
 "claude-code"
+"codex"
+"codex-app"
+"antigravity"
 
 ### Fonts
 "font-fira-code"
@@ -27,6 +30,7 @@ _:
 "font-jetbrains-mono"
 "font-noto-sans"
 "sf-symbols"
+"font-fontawesome"
 
 ### Password Management
 "1password"
@@ -39,6 +43,7 @@ _:
 "signal"
 "telegram"
 "whatsapp"
+"emclient" # E-Mail
 
 ### Productivity
 "microsoft-office"

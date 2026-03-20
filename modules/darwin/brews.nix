@@ -17,4 +17,6 @@ _:
 
 "azure-cli"
 "gemini-cli"
+"tailscale"
+"openconnect"
 ]

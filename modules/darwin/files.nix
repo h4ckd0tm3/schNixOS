@@ -14,13 +14,13 @@ in
   };
 
   "${xdg_dataHome}/sketchybar_lua/sketchybar.so" = {
-    source = "${pkgs.sbar-lua}/lib/sketchybar.so";
+    source = "${pkgs.sbarlua}/lib/lua/5.5/sketchybar.so";
     onChange = "${pkgs.sketchybar}/bin/sketchybar --reload";
   };
   
   "${xdg_configHome}/sketchybar/sketchybarrc" = {
     text = ''
-      #!/usr/bin/env ${pkgs.lua54Packages.lua}/bin/lua
+      #!/usr/bin/env ${pkgs.lua55Packages.lua}/bin/lua
       package.path = "./?.lua;./?/init.lua;" .. package.path
       -- Load the sketchybar-package and prepare the helper binaries
       require("helpers")

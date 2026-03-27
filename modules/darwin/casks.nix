@@ -23,6 +23,7 @@ _:
 "codex"
 "codex-app"
 "antigravity"
+"steipete/tap/codexbar"
 
 ### Fonts
 "font-fira-code"

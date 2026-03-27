@@ -34,9 +34,13 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+    homebrew-steipete-tap = {
+      url = "github:steipete/homebrew-tap";
+      flake = false;
+    };
   };
 
-  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, nixpkgs, catppuccin, nur } @inputs:
+  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-steipete-tap, home-manager, nixpkgs, catppuccin, nur } @inputs:
     let
       user = "schni";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
@@ -102,6 +106,7 @@
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
                   "homebrew/homebrew-bundle" = homebrew-bundle;
+                  "steipete/homebrew-tap" = homebrew-steipete-tap;
                 };
                 mutableTaps = false;
                 autoMigrate = true;

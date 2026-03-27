@@ -139,6 +139,10 @@ space_window_observer:subscribe("space_windows_change", function(env)
   end)
 end)
 
+space_window_observer:subscribe("front_app_switched", function(_)
+  sbar.exec("sleep 0.3 && sketchybar --trigger space_windows_change")
+end)
+
 spaces_indicator:subscribe("swap_menus_and_spaces", function(env)
   local currently_on = spaces_indicator:query().icon.value == icons.switch.on
   spaces_indicator:set({

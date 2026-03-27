@@ -2,7 +2,6 @@
 
 let
   user = "schni";
-  sharedFiles = import ../shared/files.nix { inherit config pkgs; };
   additionalFiles = import ./files.nix { inherit user config pkgs; };
 in
 {
@@ -21,13 +20,11 @@ in
   # Services
   services.sketchybar = {
     enable = true;
-    package = pkgs.sketchybar;
   };
 
   services.yabai = {
-    enable = true; 
+    enable = true;
     enableScriptingAddition = true;
-    package = pkgs.yabai;
     config = {
         extraConfig = builtins.readFile ./config/yabai/yabairc;
     };
@@ -35,7 +32,6 @@ in
 
   services.skhd = {
     enable = true;
-    package = pkgs.skhd;
     # https://github.com/koekeishiya/skhd/blob/master/examples/skhdrc
     # https://github.com/koekeishiya/skhd/issues/1
     skhdConfig = ''
@@ -150,7 +146,6 @@ in
 
   services.jankyborders = {
     enable = true;
-    package = pkgs.jankyborders;
   };
 
   homebrew = {
@@ -188,10 +183,7 @@ in
       home = {
         enableNixpkgsReleaseCheck = false;
         packages = pkgs.callPackage ./packages.nix {};
-        file = lib.mkMerge [
-          sharedFiles
-          additionalFiles
-        ];
+        file = additionalFiles;
 
         stateVersion = "23.11";
       };
@@ -199,8 +191,6 @@ in
 
       } // import ../shared/home-manager.nix { inherit config pkgs lib; };
 
-      # Marked broken Oct 20, 2022 check later to remove this
-      # https://github.com/nix-community/home-manager/issues/3344
       manual.manpages.enable = false;
       catppuccin.flavor = "mocha";
       catppuccin.enable = true;

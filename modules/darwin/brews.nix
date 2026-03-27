@@ -5,9 +5,6 @@ _:
 "gh" # GitHub CLI
 "uv" # Python package installer
 
-### Python Tools
-"virtualenvwrapper" # Python virtual environment management
-
 ### Security & Code Analysis
 "semgrep" # Static analysis tool
 
@@ -19,4 +16,6 @@ _:
 "gemini-cli"
 "tailscale"
 "openconnect"
+"pre-commit"
+"agent-browser"
 ]

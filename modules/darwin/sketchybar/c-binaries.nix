@@ -3,7 +3,7 @@
     pname = "cpu_load";
     version = "1.0";
     src = ../config/sketchybar/helpers/event_providers;
-    buildInputs = [pkgs.clang pkgs.gnumake];
+    nativeBuildInputs = [pkgs.clang pkgs.gnumake];
     buildPhase = ''
       cd cpu_load
       make
@@ -18,7 +18,7 @@
     pname = "network_load";
     version = "1.0";
     src = ../config/sketchybar/helpers/event_providers;
-    buildInputs = [pkgs.clang pkgs.gnumake];
+    nativeBuildInputs = [pkgs.clang pkgs.gnumake];
     buildPhase = ''
       cd network_load
       make

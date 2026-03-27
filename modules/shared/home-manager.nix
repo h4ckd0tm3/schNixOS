@@ -61,13 +61,12 @@ let name = "Marcel Schnideritsch";
         alias x='exit'
 
         alias grep='grep --color=auto'
-        alias fgrep='fgrep --color=auto'
-        alias egrep='egrep --color=auto'
+        alias fgrep='grep -F --color=auto'
+        alias egrep='grep -E --color=auto'
         alias diff='diff --color=auto'
 
         alias cat='bat'
         alias ssh="TERM=xterm-256color ssh"
-        alias hammertime="NIXPKGS_ALLOW_UNFREE=1 nix-shell -p '(import (fetchTarball "https://github.com/nix-community/NUR/archive/main.tar.gz") { pkgs = import <nixpkgs> {}; }).repos.nodezeroat.hammer'"
 
         command -v lsd &> /dev/null && alias ls='lsd --group-dirs first'
         
@@ -104,12 +103,7 @@ let name = "Marcel Schnideritsch";
 
         export XDG_CONFIG_HOME="$HOME/.config"
 
-        export WORKON_HOME=$HOME/.virtualenvs
-        export PROJECT_HOME=$HOME/Devel
-        export VIRTUALENVWRAPPER_SCRIPT=/opt/homebrew/opt/virtualenvwrapper/bin/virtualenvwrapper.sh
-        source /opt/homebrew/opt/virtualenvwrapper/bin/virtualenvwrapper_lazy.sh
-
-        export PATH="/Users/schni/Documents/flutter/bin:$PATH"
+        export PATH="$HOME/Documents/flutter/bin:$PATH"
 
         # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
         [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -157,7 +151,7 @@ let name = "Marcel Schnideritsch";
       input_delay = 1;
       resize_draw_strategy = "blank";
       remember_window_size = "no";
-      confirm_os_window_close = -2;
+      confirm_os_window_close = -1;
 
       tab_bar_min_tabs = 1;
       tab_bar_edge = "top";
@@ -185,6 +179,7 @@ let name = "Marcel Schnideritsch";
     lfs = {
       enable = true;
     };
+    signing.format = null;
     settings = {
       init.defaultBranch = "main";
       core = {
@@ -194,6 +189,7 @@ let name = "Marcel Schnideritsch";
       user = {
         name = name;
         email = email;
+        signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFtij4eh2WgT5OLTDzjGSixe+JEx9UUhh4dFIKdojghL";
       };
       pull.rebase = true;
       rebase.autoStash = true;
@@ -205,10 +201,6 @@ let name = "Marcel Schnideritsch";
       };
       commit = {
         gpgsign = true;
-      };
-
-      user = {
-        signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFtij4eh2WgT5OLTDzjGSixe+JEx9UUhh4dFIKdojghL";
       };
     };
   };
@@ -240,19 +232,16 @@ matchBlocks = {
     "nyx" = {
       user = "root";
       hostname = "149.154.152.151";
-      port = 22;
     };
 
     "cloudia" = {
       user = "schni";
       hostname = "45.142.176.14";
-      port = 22;
     };
 
     "allinkl" = {
       user = "ssh-w012e3e5";
       hostname = "85.13.161.85";
-      port = 22;
     };
 
     "git.losfuzzys.net" = {
@@ -264,13 +253,11 @@ matchBlocks = {
     "losserver" = {
       user = "admin";
       hostname = "188.68.41.88";
-      port = 22;
     };
 
     "acsc-pve" = {
       user = "root";
       hostname = "167.235.95.92";
-      port = 22;
     };
   };
   };

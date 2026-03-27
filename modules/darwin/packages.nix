@@ -19,9 +19,6 @@ shared-packages ++ [
   switchaudio-osx # Audio device switching
   nowplaying-cli # Media info CLI
 
-  ### Development Tools
-  pre-commit # Git pre-commit hooks
-
   ### Programming Languages & Runtimes
   cocoapods # iOS/macOS dependency manager
   go # Go programming language

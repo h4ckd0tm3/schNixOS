@@ -21,7 +21,6 @@ with pkgs; [
   zsh-powerlevel10k
 
   ### Monitoring & Network
-  htop
   iftop
 
   ### Data Processing & CLI Tools
@@ -32,5 +31,7 @@ with pkgs; [
 
   ### Python Packages
   python3
-  virtualenv
+
+  ### NUR Packages
+  nur.repos.nodezeroat.hammer
 ]

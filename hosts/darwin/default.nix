@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, self, ... }:
 
 let user = "schni"; in
 
@@ -13,7 +13,10 @@ let user = "schni"; in
     settings = {
       trusted-users = [ "@admin" "${user}" ];
       substituters = [ "https://nix-community.cachix.org" "https://cache.nixos.org" ];
-      trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
     };
 
     gc = {
@@ -123,6 +126,6 @@ let user = "schni"; in
     # so we do not need to logout and login again to make the changes take effect.
     /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
-    /usr/local/bin/desktoppr all "/Users/schni/nixos-config/hosts/wallpapers/mostwanted.png"
+    /usr/local/bin/desktoppr all "${self}/hosts/wallpapers/mostwanted.png"
   '';
 }

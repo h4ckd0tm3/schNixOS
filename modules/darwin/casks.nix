@@ -19,7 +19,7 @@ _:
 ### AI Tools
 "chatgpt"
 "claude"
-"claude-code"
+"claude-code@latest"
 "codex"
 "codex-app"
 "antigravity"
@@ -75,4 +75,6 @@ _:
 "spotify"
 "steam"
 "ultrastardeluxe"
+"nextcloud"
+"lunatask"
 ]

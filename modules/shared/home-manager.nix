@@ -103,7 +103,7 @@ let name = "Marcel Schnideritsch";
 
         export XDG_CONFIG_HOME="$HOME/.config"
 
-        export PATH="$HOME/Documents/flutter/bin:$PATH"
+        export PATH="$HOME/Documents/flutter/bin:$HOME/.local/bin:$PATH"
 
         # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
         [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -222,43 +222,43 @@ let name = "Marcel Schnideritsch";
         "/Users/${user}/.ssh/config_external"
       )
     ];
-matchBlocks = {
-    "*" = {
+    settings = {
+      "*" = {
         # Set the default values we want to keep
-        sendEnv = [ "LANG" "LC_*" ];
-        hashKnownHosts = true;
-    };
-    
-    "nyx" = {
-      user = "root";
-      hostname = "149.154.152.151";
-    };
+        SendEnv = [ "LANG" "LC_*" ];
+        HashKnownHosts = true;
+      };
 
-    "cloudia" = {
-      user = "schni";
-      hostname = "45.142.176.14";
-    };
+      "nyx" = {
+        User = "root";
+        HostName = "149.154.152.151";
+      };
 
-    "allinkl" = {
-      user = "ssh-w012e3e5";
-      hostname = "85.13.161.85";
-    };
+      "cloudia" = {
+        User = "schni";
+        HostName = "45.142.176.14";
+      };
 
-    "git.losfuzzys.net" = {
-      user = "git";
-      hostname = "git.losfuzzys.net";
-      port = 22222;
-    };
+      "allinkl" = {
+        User = "ssh-w012e3e5";
+        HostName = "85.13.161.85";
+      };
 
-    "losserver" = {
-      user = "admin";
-      hostname = "188.68.41.88";
-    };
+      "git.losfuzzys.net" = {
+        User = "git";
+        HostName = "git.losfuzzys.net";
+        Port = 22222;
+      };
 
-    "acsc-pve" = {
-      user = "root";
-      hostname = "167.235.95.92";
+      "losserver" = {
+        User = "admin";
+        HostName = "188.68.41.88";
+      };
+
+      "acsc-pve" = {
+        User = "root";
+        HostName = "167.235.95.92";
+      };
     };
-  };
   };
 }

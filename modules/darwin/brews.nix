@@ -18,4 +18,5 @@ _:
 "openconnect"
 "pre-commit"
 "agent-browser"
+"bun" # JavaScript runtime & package manager (homebrew-core)
 ]

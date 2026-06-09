@@ -25,9 +25,7 @@ in
   services.yabai = {
     enable = true;
     enableScriptingAddition = true;
-    config = {
-        extraConfig = builtins.readFile ./config/yabai/yabairc;
-    };
+    extraConfig = builtins.readFile ./config/yabai/yabairc;
   };
 
   services.skhd = {
@@ -179,13 +177,35 @@ in
   # Enable home-manager
   home-manager = {
     useGlobalPkgs = true;
-    users.${user} = { pkgs, config, lib, ... }:{
+    users.${user} = { pkgs, config, lib, ... }:
+      let
+        # AI-skill CLIs + their Claude Code setup steps. Add new tools here.
+        aiSkills = pkgs.callPackage ../shared/ai-skills.nix {};
+
+        # Emit a PATH-guarded, dry-run-aware shell snippet for one command.
+        guard = bin: run: ''
+          if command -v ${bin} >/dev/null 2>&1; then
+            $DRY_RUN_CMD ${run}
+          else
+            echo "${bin} not found in PATH; skipping: ${run}"
+          fi
+        '';
+      in {
       home = {
         enableNixpkgsReleaseCheck = false;
         packages = pkgs.callPackage ./packages.nix {};
         file = additionalFiles;
 
         stateVersion = "23.11";
+
+        # Install pinned global npm CLIs, then run each tool's Claude Code setup.
+        # Everything is data-driven from ../shared/ai-skills.nix — add tools there.
+        activation.aiSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] (
+          ''export PATH="/opt/homebrew/bin:$PATH"''
+          + lib.optionalString (aiSkills.globals != [])
+              ("\n" + guard "npm" "npm install -g ${lib.concatStringsSep " " aiSkills.globals}")
+          + lib.concatMapStrings (s: "\n" + guard s.bin s.run) aiSkills.setup
+        );
       };
       programs = {
 
@@ -193,6 +213,7 @@ in
 
       manual.manpages.enable = false;
       catppuccin.flavor = "mocha";
+      catppuccin.autoEnable = true;
       catppuccin.enable = true;
       imports = [
         catppuccin.homeModules.catppuccin

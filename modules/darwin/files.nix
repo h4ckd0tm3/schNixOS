@@ -21,7 +21,8 @@ in
   "${xdg_configHome}/sketchybar/sketchybarrc" = {
     text = ''
       #!/usr/bin/env ${pkgs.lua55Packages.lua}/bin/lua
-      package.path = "./?.lua;./?/init.lua;" .. package.path
+      local config_dir = os.getenv("HOME") .. "/.config/sketchybar"
+      package.path = config_dir .. "/?.lua;" .. config_dir .. "/?/init.lua;" .. package.path
       -- Load the sketchybar-package and prepare the helper binaries
       require("helpers")
       require("init")

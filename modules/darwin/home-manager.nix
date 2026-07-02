@@ -81,17 +81,11 @@ in
       shift + lalt - s : yabai -m window --toggle split
 
       # Moving windows between spaces: shift + lalt - {1, 2, 3, 4, p, n } (Assumes 4 Spaces Max per Display)
-      shift + lalt - 1 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[1] ]] \
-                        && yabai -m window --space $SPACES[1]
-
-      shift + lalt - 2 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[2] ]] \
-                        && yabai -m window --space $SPACES[2]
-
-      shift + lalt - 3 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[3] ]] \
-                        && yabai -m window --space $SPACES[3]
-
-      shift + lalt - 4 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[4] ]] \
-                        && yabai -m window --space $SPACES[4]
+      # NOTE: keep each binding on a single line — skhd does not support backslash line-continuation.
+      shift + lalt - 1 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[1] ]] && yabai -m window --space $SPACES[1]
+      shift + lalt - 2 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[2] ]] && yabai -m window --space $SPACES[2]
+      shift + lalt - 3 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[3] ]] && yabai -m window --space $SPACES[3]
+      shift + lalt - 4 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[4] ]] && yabai -m window --space $SPACES[4]
 
       shift + lalt - p : yabai -m window --space prev && yabai -m space --focus prev
       shift + lalt - n : yabai -m window --space next && yabai -m space --focus next
@@ -141,6 +135,11 @@ in
       shift + lalt - r :  sketchybar --reload
     '';
   };
+
+  # skhd runs hotkey commands through $SHELL; without this launchd leaves SHELL
+  # unset and skhd falls back to /bin/bash, which breaks the zsh array syntax
+  # ($SPACES[1]) used by the space focus/move bindings above.
+  launchd.user.agents.skhd.serviceConfig.EnvironmentVariables.SHELL = "${pkgs.zsh}/bin/zsh";
 
   services.jankyborders = {
     enable = true;
@@ -201,7 +200,9 @@ in
         # Install pinned global npm CLIs, then run each tool's Claude Code setup.
         # Everything is data-driven from ../shared/ai-skills.nix — add tools there.
         activation.aiSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] (
-          ''export PATH="/opt/homebrew/bin:$PATH"''
+          # /opt/homebrew/bin for brew-installed CLIs (node/npx); pkgs.git so the
+          # `skills` CLI's internal `spawn git` resolves (else: spawn git ENOENT).
+          ''export PATH="/opt/homebrew/bin:${lib.makeBinPath [ pkgs.git ]}:$PATH"''
           + lib.optionalString (aiSkills.globals != [])
               ("\n" + guard "npm" "npm install -g ${lib.concatStringsSep " " aiSkills.globals}")
           + lib.concatMapStrings (s: "\n" + guard s.bin s.run) aiSkills.setup

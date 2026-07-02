@@ -19,4 +19,6 @@ _:
 "pre-commit"
 "agent-browser"
 "bun" # JavaScript runtime & package manager (homebrew-core)
+"opencode" # AI coding agent built for the terminal
+"llama.cpp" # LLM inference in C/C++
 ]

@@ -76,6 +76,17 @@ let name = "Marcel Schnideritsch";
                 mkdir -p "$1" && cd "$1"
         }
 
+        function resetroute() {
+            echo "Flushing routes...";
+            for i in $(ifconfig | egrep -o "^[a-z].+\d{1}:" | sed 's/://'); do
+                sudo ifconfig "$i" down;
+            done;
+            sudo route -n flush;
+            for i in $(ifconfig | egrep -o "^[a-z].+\d{1}:" | sed 's/://'); do
+                sudo ifconfig "$i" up;
+            done
+        }
+
         function transfer() {
             if [ $# -eq 0 ]; then
                 echo "No arguments specified.\nUsage:\n transfer <file|directory>\n ... | transfer <file_name>" >&2

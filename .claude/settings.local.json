@@ -1,7 +1,26 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find /Users/schni/nixos-config/overlays -type f -name *.nix)"
+      "Bash(find /Users/schni/nixos-config/overlays -type f -name *.nix)",
+      "Bash(nix eval *)",
+      "Bash(launchctl list *)",
+      "WebSearch",
+      "Bash(yabai -m space --focus 1)",
+      "Bash(yabai -m window --focus 77)",
+      "Bash(yabai --version)",
+      "Bash(echo \"installed yabai: $\\(yabai --version\\)\")",
+      "Bash(curl -s --max-time 10 https://api.github.com/repos/koekeishiya/yabai/releases/latest)",
+      "Bash(curl -s \"https://raw.githubusercontent.com/anomalyco/homebrew-tap/HEAD/opencode.rb\")",
+      "Bash(curl -s \"https://formulae.brew.sh/api/formula/opencode.json\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('desc:',d['desc']\\); print\\('homepage:',d['homepage']\\); print\\('version:',d['versions']['stable']\\)\")",
+      "Bash(brew services *)",
+      "Bash(grep '\\\\.nix$')",
+      "Read(//nix/store/kyjksmlx8vkwlkhlbpswa5clyj6hsik9-JankyBorders-1.9.0/bin/**)",
+      "Read(//nix/store/6j2rfgbcrxm9j1kb30bgn0xf5kp252n7-skhd-0.3.9/bin/**)",
+      "Read(//nix/store/xm0c14a3kb83dwjplgw51jbfasrl9p06-yabai-7.1.25/bin/**)",
+      "Read(//nix/store/**)",
+      "Bash(log show *)",
+      "Bash(launchctl error *)"
     ]
   }
 }

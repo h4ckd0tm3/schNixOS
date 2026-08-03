@@ -5,7 +5,8 @@ YELLOW='\033[1;33m'
 RED='\033[1;31m'
 NC='\033[0m'
 
-FLAKE="Dustins-MBP"
+# Override to target a named host, e.g. FLAKE_HOST=pentest
+FLAKE="${FLAKE_HOST:-aarch64-darwin}"
 
 echo "${YELLOW}Available generations:${NC}"
 /run/current-system/sw/bin/darwin-rebuild --list-generations

@@ -126,6 +126,10 @@ let user = "schni"; in
     # so we do not need to logout and login again to make the changes take effect.
     /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
-    /usr/local/bin/desktoppr all "${self}/hosts/wallpapers/mostwanted.png"
+    # Guarded: on a freshly provisioned machine the cask is not installed yet,
+    # and an unguarded call aborts the whole activation.
+    if [ -x /usr/local/bin/desktoppr ]; then
+      /usr/local/bin/desktoppr all "${self}/hosts/wallpapers/mostwanted.png"
+    fi
   '';
 }

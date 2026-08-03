@@ -84,38 +84,40 @@
         "check-keys" = mkApp "check-keys" system;
         "rollback" = mkApp "rollback" system;
       };
+      mkDarwin = system: hostModules: darwin.lib.darwinSystem {
+        inherit system;
+        specialArgs = inputs;
+        modules = [
+          home-manager.darwinModules.home-manager
+          nix-homebrew.darwinModules.nix-homebrew
+          {
+            nix-homebrew = {
+              inherit user;
+              enable = true;
+              taps = {
+                "homebrew/homebrew-core" = homebrew-core;
+                "homebrew/homebrew-cask" = homebrew-cask;
+                "homebrew/homebrew-bundle" = homebrew-bundle;
+                "steipete/homebrew-tap" = homebrew-steipete-tap;
+              };
+              mutableTaps = false;
+              autoMigrate = true;
+            };
+          }
+        ] ++ hostModules;
+      };
     in
     {
       devShells = forAllSystems devShell;
       apps = nixpkgs.lib.genAttrs linuxSystems mkLinuxApps // nixpkgs.lib.genAttrs darwinSystems mkDarwinApps;
 
-      darwinConfigurations = nixpkgs.lib.genAttrs darwinSystems (system: let
-        user = "schni";
-      in
-        darwin.lib.darwinSystem {
-          inherit system;
-          specialArgs = inputs;
-          modules = [
-            home-manager.darwinModules.home-manager
-            nix-homebrew.darwinModules.nix-homebrew
-            {
-              nix-homebrew = {
-                inherit user;
-                enable = true;
-                taps = {
-                  "homebrew/homebrew-core" = homebrew-core;
-                  "homebrew/homebrew-cask" = homebrew-cask;
-                  "homebrew/homebrew-bundle" = homebrew-bundle;
-                  "steipete/homebrew-tap" = homebrew-steipete-tap;
-                };
-                mutableTaps = false;
-                autoMigrate = true;
-              };
-            }
-            ./hosts/darwin
-          ];
-        }
-      );
+      darwinConfigurations =
+        nixpkgs.lib.genAttrs darwinSystems (system: mkDarwin system [ ./hosts/darwin ])
+        // {
+          # Pentest MacBook (Apple Silicon). Daily-driver base + pentest overlay.
+          # Switch with: FLAKE_HOST=pentest nix run .#build-switch
+          pentest = mkDarwin "aarch64-darwin" [ ./hosts/darwin ./modules/darwin/pentest ];
+        };
 
       wslConfigurations = nixpkgs.lib.genAttrs linuxSystems (system:
       nixpkgs.lib.nixosSystem {

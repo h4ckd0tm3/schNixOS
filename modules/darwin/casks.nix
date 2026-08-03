@@ -12,7 +12,7 @@ _:
 
 ### Development Tools
 "cmake-app"
-#"docker-desktop"
+"docker-desktop"
 "insomnia"
 "lens"
 

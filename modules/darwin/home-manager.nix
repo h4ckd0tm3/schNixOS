@@ -60,6 +60,15 @@ in
     casks = pkgs.callPackage ./casks.nix {};
     onActivation.cleanup = "uninstall";
 
+    # nix-homebrew owns the taps (mutableTaps = false in flake.nix), so this
+    # module's generated Brewfile lists none of them. Combined with the cleanup
+    # above that means every `brew bundle --force-cleanup` during activation
+    # tries to untap homebrew/cask and homebrew/bundle -- which either fails
+    # against the read-only nix-homebrew tap dirs or leaves brew unable to
+    # resolve a single cask afterwards. Mirroring nix-homebrew's tap set into
+    # the Brewfile makes cleanup treat them as declared and leave them alone.
+    taps = builtins.attrNames config.nix-homebrew.taps;
+
     # These app IDs are from using the mas CLI app
     # mas = mac app store
     # https://github.com/mas-cli/mas

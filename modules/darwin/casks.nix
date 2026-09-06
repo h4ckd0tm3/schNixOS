@@ -22,7 +22,6 @@ _:
 "claude-code@latest"
 "codex"
 "codex-app"
-"antigravity"
 "steipete/tap/codexbar"
 
 ### Fonts
@@ -60,7 +59,7 @@ _:
 
 ### Reverse Engineering
 "hex-fiend"
-"machoview"
+#"machoview"
 
 ### Utilities
 "alfred"

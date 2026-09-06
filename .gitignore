@@ -1,3 +1,4 @@
 flake.lock
 assets/
 result
+.DS_Store

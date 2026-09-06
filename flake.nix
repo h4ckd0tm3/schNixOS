@@ -114,9 +114,9 @@
       darwinConfigurations =
         nixpkgs.lib.genAttrs darwinSystems (system: mkDarwin system [ ./hosts/darwin ])
         // {
-          # Pentest MacBook (Apple Silicon). Daily-driver base + pentest overlay.
+          # Pentest MacBook (Apple Silicon).
           # Switch with: FLAKE_HOST=pentest nix run .#build-switch
-          pentest = mkDarwin "aarch64-darwin" [ ./hosts/darwin ./modules/darwin/pentest ];
+          pentest = mkDarwin "aarch64-darwin" [ ./hosts/pentest ];
         };
 
       wslConfigurations = nixpkgs.lib.genAttrs linuxSystems (system:

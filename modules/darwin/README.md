@@ -14,13 +14,15 @@
 ## Hosts
 
 `hosts/darwin` is the daily driver and is built as `darwinConfigurations.<system>`.
-The pentest MacBook layers `modules/darwin/pentest` on top of that same base and is
-built as `darwinConfigurations.pentest`:
+The pentest MacBook ("kusanagi") is its own host at `hosts/pentest`, which imports
+that same base plus the `modules/darwin/pentest` tooling overlay, and is built as
+`darwinConfigurations.pentest`:
 
 ```
 FLAKE_HOST=pentest nix run .#build-switch
 ```
 
-The overlay only states differences — extra tooling, extra casks, a few personal
-casks removed, Touch ID sudo, and its own wallpaper. Everything else (window
-manager, shell, git, macOS defaults) is inherited unchanged.
+The overlay only states tooling differences — extra packages, extra casks, a few
+personal casks removed. Host identity (hostname, Touch ID sudo, lock policy,
+wallpaper) lives in `hosts/pentest`. Everything else (window manager, shell, git,
+macOS defaults) is inherited unchanged.

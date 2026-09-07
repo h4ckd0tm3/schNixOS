@@ -14,7 +14,6 @@ _:
 
 "azure-cli"
 "gemini-cli"
-"tailscale"
 "openconnect"
 "pre-commit"
 "agent-browser"

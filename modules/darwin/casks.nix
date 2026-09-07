@@ -63,6 +63,7 @@ _:
 
 ### Utilities
 "alfred"
+"tailscale-app" # Menu bar app; the brew formula is the headless daemon
 "balenaetcher"
 "desktoppr"
 "downie"

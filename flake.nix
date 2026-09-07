@@ -16,16 +16,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     darwin = {
-      url = "github:LnL7/nix-darwin/master";
+      url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-homebrew = {
       url = "github:zhaofengli/nix-homebrew";
     };
-    homebrew-bundle = {
-      url = "github:homebrew/homebrew-bundle";
-      flake = false;
-    };
+    # `brew bundle` ships inside brew itself since 2025; the separate
+    # homebrew/homebrew-bundle tap is archived and no longer needed.
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
       flake = false;
@@ -40,18 +38,16 @@
     };
   };
 
-  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-steipete-tap, home-manager, nixpkgs, catppuccin, nur } @inputs:
+  outputs = { self, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-steipete-tap, home-manager, nixpkgs, ... } @inputs:
     let
       user = "schni";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
-      darwinSystems = [ "aarch64-darwin" "x86_64-darwin" ];
+      # Only Apple Silicon Macs are managed here.
+      darwinSystems = [ "aarch64-darwin" ];
       forAllSystems = f: nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) f;
       devShell = system: let pkgs = nixpkgs.legacyPackages.${system}; in {
-        default = with pkgs; mkShell {
+        default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [ bashInteractive git ];
-          shellHook = with pkgs; ''
-            export EDITOR=vim
-          '';
         };
       };
       mkApp = scriptName: system: {
@@ -63,27 +59,11 @@
           exec ${self}/apps/${system}/${scriptName} "$@"
         '')}/bin/${scriptName}";
       };
-      mkLinuxApps = system: {
-        "apply" = mkApp "apply" system;
-        "build-switch" = mkApp "build-switch" system;
-        "build-switch-emacs" = mkApp "build-switch-emacs" system;
-        "clean" = mkApp "clean" system;
-        "copy-keys" = mkApp "copy-keys" system;
-        "create-keys" = mkApp "create-keys" system;
-        "check-keys" = mkApp "check-keys" system;
-        "install" = mkApp "install" system;
-        "install-with-secrets" = mkApp "install-with-secrets" system;
-      };
-      mkDarwinApps = system: {
-        "apply" = mkApp "apply" system;
-        "build" = mkApp "build" system;
-        "build-switch" = mkApp "build-switch" system;
-        "clean" = mkApp "clean" system;
-        "copy-keys" = mkApp "copy-keys" system;
-        "create-keys" = mkApp "create-keys" system;
-        "check-keys" = mkApp "check-keys" system;
-        "rollback" = mkApp "rollback" system;
-      };
+      # Every executable in apps/<system>/ becomes `nix run .#<name>`.
+      mkApps = system:
+        nixpkgs.lib.genAttrs
+          (builtins.attrNames (builtins.readDir (./apps + "/${system}")))
+          (scriptName: mkApp scriptName system);
       mkDarwin = system: hostModules: darwin.lib.darwinSystem {
         inherit system;
         specialArgs = inputs;
@@ -97,7 +77,6 @@
               taps = {
                 "homebrew/homebrew-core" = homebrew-core;
                 "homebrew/homebrew-cask" = homebrew-cask;
-                "homebrew/homebrew-bundle" = homebrew-bundle;
                 "steipete/homebrew-tap" = homebrew-steipete-tap;
               };
               mutableTaps = false;
@@ -109,15 +88,17 @@
     in
     {
       devShells = forAllSystems devShell;
-      apps = nixpkgs.lib.genAttrs linuxSystems mkLinuxApps // nixpkgs.lib.genAttrs darwinSystems mkDarwinApps;
+      apps = forAllSystems mkApps;
 
-      darwinConfigurations =
-        nixpkgs.lib.genAttrs darwinSystems (system: mkDarwin system [ ./hosts/darwin ])
-        // {
-          # Pentest MacBook (Apple Silicon).
-          # Switch with: FLAKE_HOST=pentest nix run .#build-switch
-          pentest = mkDarwin "aarch64-darwin" [ ./hosts/pentest ];
-        };
+      darwinConfigurations = {
+        # Daily driver. Keyed by system so `nix run .#build-switch` finds it
+        # without FLAKE_HOST.
+        aarch64-darwin = mkDarwin "aarch64-darwin" [ ./hosts/darwin ];
+
+        # Pentest MacBook (Apple Silicon).
+        # Switch with: FLAKE_HOST=pentest nix run .#build-switch
+        pentest = mkDarwin "aarch64-darwin" [ ./hosts/pentest ];
+      };
 
       wslConfigurations = nixpkgs.lib.genAttrs linuxSystems (system:
       nixpkgs.lib.nixosSystem {

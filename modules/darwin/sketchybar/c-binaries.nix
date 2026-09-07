@@ -1,60 +1,48 @@
-{pkgs, ...}: let
-  cpuLoadBinary = pkgs.stdenv.mkDerivation {
-    pname = "cpu_load";
-    version = "1.0";
-    src = ../config/sketchybar/helpers/event_providers;
-    nativeBuildInputs = [pkgs.clang pkgs.gnumake];
-    buildPhase = ''
-      cd cpu_load
-      make
-    '';
-    installPhase = ''
-      mkdir -p $out/bin
-      cp cpu_load/bin/cpu_load $out/bin/ || cp cpu_load/cpu_load $out/bin/ || cp bin/cpu_load $out/bin/
-    '';
+{ pkgs, ... }:
+
+# The three C helpers sketchybar's Lua config shells out to. Each derivation
+# sees only the files its makefile needs, so editing one helper (or a Lua
+# file next to them) does not rebuild the others.
+
+let
+  inherit (pkgs) lib;
+  helpers = ../config/sketchybar/helpers;
+
+  mkHelper = { name, root, files }:
+    pkgs.stdenv.mkDerivation {
+      pname = name;
+      version = "1.0";
+      src = lib.fileset.toSource {
+        inherit root;
+        fileset = lib.fileset.unions files;
+      };
+      nativeBuildInputs = [ pkgs.clang pkgs.gnumake ];
+      dontConfigure = true;
+      buildPhase = "make -C ${name}";
+      installPhase = "install -Dm755 ${name}/bin/${name} $out/bin/${name}";
+      meta = {
+        platforms = lib.platforms.darwin;
+        mainProgram = name;
+      };
+    };
+in
+{
+  cpuLoadBinary = mkHelper {
+    name = "cpu_load";
+    root = helpers + "/event_providers";
+    files = [ (helpers + "/event_providers/cpu_load") (helpers + "/event_providers/sketchybar.h") ];
   };
 
-  networkLoadBinary = pkgs.stdenv.mkDerivation {
-    pname = "network_load";
-    version = "1.0";
-    src = ../config/sketchybar/helpers/event_providers;
-    nativeBuildInputs = [pkgs.clang pkgs.gnumake];
-    buildPhase = ''
-      cd network_load
-      make
-    '';
-    installPhase = ''
-      mkdir -p $out/bin
-      cp network_load/bin/network_load $out/bin/ || cp network_load/network_load $out/bin/ || cp bin/network_load $out/bin/
-    '';
+  networkLoadBinary = mkHelper {
+    name = "network_load";
+    root = helpers + "/event_providers";
+    files = [ (helpers + "/event_providers/network_load") (helpers + "/event_providers/sketchybar.h") ];
   };
 
-  menusBinary = pkgs.stdenv.mkDerivation {
-    pname = "menus";
-    version = "1.0";
-    src = ../config/sketchybar/helpers;
-
-    nativeBuildInputs = [pkgs.clang pkgs.gnumake];
-
-    NIX_CFLAGS_COMPILE = ''
-      -F$SDKROOT/System/Library/Frameworks
-      -F$SDKROOT/System/Library/PrivateFrameworks
-    '';
-
-    NIX_LDFLAGS = ''
-      -framework Carbon
-      -framework SkyLight
-    '';
-
-    buildPhase = ''
-      cd menus
-      make
-    '';
-    installPhase = ''
-      mkdir -p $out/bin
-      cp menus/bin/menus $out/bin/ || cp menus/menus $out/bin/ || cp bin/menus $out/bin/
-    '';
+  # menus/makefile links Carbon and SkyLight itself.
+  menusBinary = mkHelper {
+    name = "menus";
+    root = helpers;
+    files = [ (helpers + "/menus") ];
   };
-in {
-  inherit cpuLoadBinary networkLoadBinary menusBinary;
 }

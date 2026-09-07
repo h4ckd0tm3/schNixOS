@@ -18,7 +18,6 @@ with pkgs; [
   ### Terminal Enhancements
   lsd
   tree
-  zsh-powerlevel10k
 
   ### Monitoring & Network
   iftop

@@ -1,27 +1,11 @@
 { pkgs }:
 
-with pkgs;
-let 
+# Home packages for the daily driver: the cross-platform CLI base and the macOS
+# desktop infrastructure. Append a list here for anything only this machine
+# wants (apps come from casks.nix / brews.nix).
+
+let
   shared-packages = import ../shared/packages.nix { inherit pkgs; };
+  desktop-base = import ./desktop-base.nix { inherit pkgs; };
 in
-shared-packages ++ [
-  ### Window Management
-  jankyborders # Window border styling
-  yabai # Tiling window manager
-
-  ### Status Bar & UI
-  sketchybar # Customizable status bar
-  sketchybar-app-font # Font for sketchybar app icons
-
-  ### macOS System Utilities
-  dockutil # Dock management CLI
-  skhd # Hotkey daemon
-  switchaudio-osx # Audio device switching
-  nowplaying-cli # Media info CLI
-
-  ### Programming Languages & Runtimes
-  cocoapods # iOS/macOS dependency manager
-  go # Go programming language
-  lua54Packages.lua # Lua scripting language
-  rustup # Rust toolchain installer
-]
+shared-packages ++ desktop-base

@@ -6,7 +6,9 @@ RED='\033[1;31m'
 NC='\033[0m'
 
 SYSTEM_TYPE="aarch64-darwin"
-FLAKE_SYSTEM="darwinConfigurations.${SYSTEM_TYPE}.system"
+# Override to target a named host, e.g. FLAKE_HOST=pentest
+FLAKE_HOST="${FLAKE_HOST:-$SYSTEM_TYPE}"
+FLAKE_SYSTEM="darwinConfigurations.${FLAKE_HOST}.system"
 
 export NIXPKGS_ALLOW_UNFREE=1
 

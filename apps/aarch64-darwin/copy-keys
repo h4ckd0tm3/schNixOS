@@ -9,8 +9,8 @@ username=${USER}
 export SSH_DIR=/Users/${username}/.ssh
 
 handle_no_usb() {
-  echo -e ${RED}No USB drive found or mounted.${NC}"
-  echo -e ${GREEN}If you have not yet set up your keys, run the script to generate new SSH keys.${NC}"
+  echo -e "${RED}No USB drive found or mounted.${NC}"
+  echo -e "${GREEN}If you have not yet set up your keys, run the script to generate new SSH keys.${NC}"
   exit 1
 }
 

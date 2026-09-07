@@ -20,7 +20,16 @@
       "Read(//nix/store/xm0c14a3kb83dwjplgw51jbfasrl9p06-yabai-7.1.25/bin/**)",
       "Read(//nix/store/**)",
       "Bash(log show *)",
-      "Bash(launchctl error *)"
+      "Bash(launchctl error *)",
+      "Bash(git -C /Users/schni/nixos-config show --stat HEAD)",
+      "Bash(nix build *)",
+      "Bash(node *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(brew tap *)",
+      "Bash(brew list *)",
+      "Bash(nix log *)"
     ]
   }
 }

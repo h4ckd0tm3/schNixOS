@@ -13,13 +13,8 @@ let name = "Marcel Schnideritsch";
   fzf = {
     enable = true;
     enableZshIntegration = true;
-    defaultOptions = [
-      "--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8"
-      "--color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc"
-      "--color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
-      "--color=selected-bg:#45475a"
-      "--multi"
-    ];
+    # Colours come from the catppuccin module (autoEnable).
+    defaultOptions = [ "--multi" ];
   };
 
   bat = {
@@ -28,6 +23,7 @@ let name = "Marcel Schnideritsch";
 
   zsh = {
     enable = true;
+    sessionVariables.XDG_CONFIG_HOME = "$HOME/.config";
     plugins = [
       {
         name = "powerlevel10k";
@@ -70,7 +66,7 @@ let name = "Marcel Schnideritsch";
 
         command -v lsd &> /dev/null && alias ls='lsd --group-dirs first'
         
-        eval "$(navi widget zsh)"
+        command -v navi &> /dev/null && eval "$(navi widget zsh)"
 
         function mkcd() {
                 mkdir -p "$1" && cd "$1"
@@ -101,8 +97,7 @@ let name = "Marcel Schnideritsch";
                 fi
                 if [ -d "$file" ]; then
                     file_name="$file_name.zip"
-                    ,
-                    (cd "$file" && zip -r -q - .) | curl -u zippy:zippy --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy,
+                    (cd "$file" && zip -r -q - .) | curl -u zippy:zippy --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy
                 else
                     cat "$file" | curl -u zippy:zippy --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy
                 fi
@@ -111,8 +106,6 @@ let name = "Marcel Schnideritsch";
                 curl -u zippy:zippy --progress-bar --upload-file "-" "https://tr.vuln.at/$file_name" | tee /dev/null | pbcopy
             fi
         }
-
-        export XDG_CONFIG_HOME="$HOME/.config"
 
         export PATH="$HOME/Documents/flutter/bin:$HOME/.local/bin:$PATH"
 
@@ -126,7 +119,6 @@ let name = "Marcel Schnideritsch";
     shellIntegration.enableZshIntegration = true;
     font.name = "Hack Nerd Font Mono";
     font.size = 15;
-    themeFile = "Catppuccin-Mocha";
     keybindings = {
       "cmd+1" = "goto_tab 1";
       "cmd+2" = "goto_tab 2";
@@ -190,7 +182,11 @@ let name = "Marcel Schnideritsch";
     lfs = {
       enable = true;
     };
-    signing.format = null;
+    signing = {
+      format = "ssh";
+      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFtij4eh2WgT5OLTDzjGSixe+JEx9UUhh4dFIKdojghL";
+      signer = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
+    };
     settings = {
       init.defaultBranch = "main";
       core = {
@@ -198,25 +194,18 @@ let name = "Marcel Schnideritsch";
         autocrlf = "input";
       };
       user = {
-        name = name;
-        email = email;
-        signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFtij4eh2WgT5OLTDzjGSixe+JEx9UUhh4dFIKdojghL";
+        inherit name email;
       };
       pull.rebase = true;
       rebase.autoStash = true;
-      gpg = {
-        format = "ssh";
-      };
-      "gpg \"ssh\"" = {
-        program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
-      };
-      commit = {
-        gpgsign = true;
-      };
+      commit.gpgsign = true;
     };
   };
 
-  direnv.enable = true;
+  direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
   ssh = {
     enable = true;

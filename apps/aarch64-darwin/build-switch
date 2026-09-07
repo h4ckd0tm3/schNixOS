@@ -6,7 +6,9 @@ RED='\033[1;31m'
 NC='\033[0m'
 
 SYSTEM_TYPE="aarch64-darwin"
-FLAKE_SYSTEM="darwinConfigurations.${SYSTEM_TYPE}.system"
+# Override to target a named host, e.g. FLAKE_HOST=pentest
+FLAKE_HOST="${FLAKE_HOST:-$SYSTEM_TYPE}"
+FLAKE_SYSTEM="darwinConfigurations.${FLAKE_HOST}.system"
 
 export NIXPKGS_ALLOW_UNFREE=1
 
@@ -15,7 +17,7 @@ nix --extra-experimental-features 'nix-command flakes' build .#$FLAKE_SYSTEM $@
 
 echo "${YELLOW}Switching to new generation...${NC}"
 # See https://github.com/nix-darwin/nix-darwin/issues/1457 on why we need sudo
-sudo ./result/sw/bin/darwin-rebuild switch --flake .#${SYSTEM_TYPE} $@
+sudo ./result/sw/bin/darwin-rebuild switch --flake .#${FLAKE_HOST} $@
 
 echo "${YELLOW}Cleaning up...${NC}"
 unlink ./result

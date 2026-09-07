@@ -2,16 +2,17 @@
 
 # Original source: https://gist.github.com/antifuchs/10138c4d838a63c0a05e725ccd7bccdd
 
-with lib;
 let
+  inherit (lib) mkOption mkIf types hasSuffix concatMapStrings;
   cfg = config.local.dock;
-  inherit (pkgs) stdenv dockutil;
+  inherit (pkgs) dockutil;
 in
 {
   options = {
     local.dock.enable = mkOption {
       description = "Enable dock";
-      default = stdenv.isDarwin;
+      type = types.bool;
+      default = pkgs.stdenv.hostPlatform.isDarwin;
       example = false;
     };
 
@@ -31,7 +32,7 @@ in
             };
           };
         });
-        readOnly = true;
+        default = [ ];
       };
     local.dock.username = mkOption {
       description = "Username to apply the dock settings to";

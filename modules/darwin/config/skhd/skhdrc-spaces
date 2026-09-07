@@ -1,0 +1,28 @@
+## Space control (requires the yabai scripting addition, i.e. SIP disabled).
+## Hosts with SIP enabled replace this file — see modules/pentest/config/skhd/skhdrc-spaces.
+
+# Create a new space: lalt + n
+lalt - n : yabai -m space --create; yabai -m space --focus last
+
+# Move to previous/next space: lalt - {i, o}
+lalt - i : yabai -m space --focus prev
+lalt - o : yabai -m space --focus next
+
+# Delete the current space: lalt + w
+lalt - w : yabai -m space --destroy
+
+# Space Navigation (four spaces per display): lalt - {1, 2, 3, 4}
+lalt - 1 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[1] ]] && yabai -m space --focus $SPACES[1]
+lalt - 2 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[2] ]] && yabai -m space --focus $SPACES[2]
+lalt - 3 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[3] ]] && yabai -m space --focus $SPACES[3]
+lalt - 4 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[4] ]] && yabai -m space --focus $SPACES[4]
+
+# Moving windows between spaces: shift + lalt - {1, 2, 3, 4, p, n } (Assumes 4 Spaces Max per Display)
+# NOTE: keep each binding on a single line — skhd does not support backslash line-continuation.
+shift + lalt - 1 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[1] ]] && yabai -m window --space $SPACES[1]
+shift + lalt - 2 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[2] ]] && yabai -m window --space $SPACES[2]
+shift + lalt - 3 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[3] ]] && yabai -m window --space $SPACES[3]
+shift + lalt - 4 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[4] ]] && yabai -m window --space $SPACES[4]
+
+shift + lalt - p : yabai -m window --space prev && yabai -m space --focus prev
+shift + lalt - n : yabai -m window --space next && yabai -m space --focus next

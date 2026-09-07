@@ -1,160 +1,37 @@
-{ config, pkgs, lib, home-manager, catppuccin, ... }:
+{ pkgs, ... }:
 
-let
-  user = "schni";
-  additionalFiles = import ./files.nix { inherit user config pkgs; };
-in
+# Daily driver. Shared user plumbing (account, sketchybar, borders, homebrew
+# policy, home-manager wiring, dock) comes from ./home-base.nix; this file
+# holds what is specific to this machine: the SIP-off yabai/skhd config and
+# the package, brew, cask and App Store lists.
+
+let user = "schni"; in
 {
   imports = [
-   ./dock
+    ./home-base.nix
   ];
-
-  # It me
-  users.users.${user} = {
-    name = "${user}";
-    home = "/Users/${user}";
-    isHidden = false;
-    shell = pkgs.zsh;
-  };
-
-  # Services
-  services.sketchybar = {
-    enable = true;
-  };
 
   services.yabai = {
     enable = true;
     enableScriptingAddition = true;
-    extraConfig = builtins.readFile ./config/yabai/yabairc;
+    extraConfig =
+      builtins.readFile ./config/yabai/yabairc
+      + builtins.readFile ./config/yabai/rules;
   };
 
   services.skhd = {
     enable = true;
     # https://github.com/koekeishiya/skhd/blob/master/examples/skhdrc
     # https://github.com/koekeishiya/skhd/issues/1
-    skhdConfig = ''
-      ## Navigation (lalt - ...)
-      # Create a new space: lalt + n
-      lalt - n : yabai -m space --create; yabai -m space --focus last
-
-      # Move to previous/next space: lalt - {i, o}
-      lalt - i : yabai -m space --focus prev
-      lalt - o : yabai -m space --focus next
-
-      # Delete the current space: lalt + w
-      lalt - w : yabai -m space --destroy
-
-      # Space Navigation (four spaces per display): lalt - {1, 2, 3, 4}
-      lalt - 1 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[1] ]] && yabai -m space --focus $SPACES[1]
-      lalt - 2 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[2] ]] && yabai -m space --focus $SPACES[2]
-      lalt - 3 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[3] ]] && yabai -m space --focus $SPACES[3]
-      lalt - 4 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[4] ]] && yabai -m space --focus $SPACES[4]
-
-      # Window Navigation (through display borders): lalt - {j, k, l, ö}
-      lalt - j    : yabai -m window --focus west  || yabai -m display --focus west
-      lalt - k    : yabai -m window --focus south || yabai -m display --focus south
-      lalt - l    : yabai -m window --focus north || yabai -m display --focus north
-      lalt - 0x29 : yabai -m window --focus east  || yabai -m display --focus east
-
-      # Extended Window Navigation: lalt - {h, ä}
-      lalt -    h : yabai -m window --focus first
-      lalt - 0x27 : yabai -m window --focus  last
-
-      # Float / Unfloat window: lalt - space
-      lalt - space : yabai -m window --toggle float; sketchybar --trigger window_focus
-
-      # Make window zoom to fullscreen: shift + lalt - f
-      ctrl + shift - f : yabai -m window --toggle native-fullscreen; sketchybar --trigger window_focus
-      shift + lalt - f : yabai -m window --toggle zoom-fullscreen; sketchybar --trigger window_focus
-
-      # Make window zoom to parent node: lalt - f
-      lalt - f : yabai -m window --toggle zoom-parent; sketchybar --trigger window_focus
-
-      ## Window Movement (shift + lalt - ...)
-      # Moving windows in spaces: shift + lalt - {j, k, l, ö}
-      shift + lalt - j : yabai -m window --warp west || $(yabai -m window --display west && yabai -m display --focus west && yabai -m window --warp last) || yabai -m window --move rel:-10:0
-      shift + lalt - k : yabai -m window --warp south || $(yabai -m window --display south && yabai -m display --focus south) || yabai -m window --move rel:0:10
-      shift + lalt - l : yabai -m window --warp north || $(yabai -m window --display north && yabai -m display --focus north) || yabai -m window --move rel:0:-10
-      shift + lalt - 0x29 : yabai -m window --warp east || $(yabai -m window --display east && yabai -m display --focus east && yabai -m window --warp first) || yabai -m window --move rel:10:0
-
-      # Toggle split orientation of the selected windows node: shift + lalt - s
-      shift + lalt - s : yabai -m window --toggle split
-
-      # Moving windows between spaces: shift + lalt - {1, 2, 3, 4, p, n } (Assumes 4 Spaces Max per Display)
-      # NOTE: keep each binding on a single line — skhd does not support backslash line-continuation.
-      shift + lalt - 1 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[1] ]] && yabai -m window --space $SPACES[1]
-      shift + lalt - 2 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[2] ]] && yabai -m window --space $SPACES[2]
-      shift + lalt - 3 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[3] ]] && yabai -m window --space $SPACES[3]
-      shift + lalt - 4 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[4] ]] && yabai -m window --space $SPACES[4]
-
-      shift + lalt - p : yabai -m window --space prev && yabai -m space --focus prev
-      shift + lalt - n : yabai -m window --space next && yabai -m space --focus next
-
-      # Mirror Space on X and Y Axis: shift + lalt - {x, y}
-      shift + lalt - x : yabai -m space --mirror x-axis
-      shift + lalt - y : yabai -m space --mirror y-axis
-
-      ## Stacks (shift + ctrl - ...)
-      # Add the active window to the window or stack to the {direction}: shift + ctrl - {j, k, l, ö}
-      shift + ctrl - j    : yabai -m window  west --stack $(yabai -m query --windows --window | jq -r '.id')
-      shift + ctrl - k    : yabai -m window south --stack $(yabai -m query --windows --window | jq -r '.id')
-      shift + ctrl - l    : yabai -m window north --stack $(yabai -m query --windows --window | jq -r '.id')
-      shift + ctrl - 0x29 : yabai -m window  east --stack $(yabai -m query --windows --window | jq -r '.id')
-
-      # Stack Navigation: shift + ctrl - {n, p}
-      shift + ctrl - n : yabai -m window --focus stack.next
-      shift + ctrl - p : yabai -m window --focus stack.prev
-
-      ## Resize (ctrl + lalt - ...)
-      # Resize windows: ctrl + lalt - {j, k, l, ö}
-      ctrl + lalt - j    : yabai -m window --resize right:-100:0 || yabai -m window --resize left:-100:0
-      ctrl + lalt - k    : yabai -m window --resize bottom:0:100 || yabai -m window --resize top:0:100
-      ctrl + lalt - l    : yabai -m window --resize bottom:0:-100 || yabai -m window --resize top:0:-100
-      ctrl + lalt - 0x29 : yabai -m window --resize right:100:0 || yabai -m window --resize left:100:0
-
-      # Equalize size of windows: ctrl + lalt - e
-      ctrl + lalt - e : yabai -m space --balance
-
-      # Enable / Disable gaps in current workspace: ctrl + lalt - g
-      ctrl + lalt - g : yabai -m space --toggle padding; yabai -m space --toggle gap
-
-      ## Insertion (shift + ctrl + lalt - ...)
-      # Set insertion point for focused container: shift + ctrl + lalt - {j, k, l, ö, s}
-      shift + ctrl + lalt - j : yabai -m window --insert west
-      shift + ctrl + lalt - k : yabai -m window --insert south
-      shift + ctrl + lalt - l : yabai -m window --insert north
-      shift + ctrl + lalt - 0x29 : yabai -m window --insert east
-      shift + ctrl + lalt - s : yabai -m window --insert stack
-
-      # New window in hor./ vert. splits for all applications with yabai
-      lalt - s : yabai -m window --insert east;  skhd -k "cmd - n"
-      lalt - v : yabai -m window --insert south; skhd -k "cmd - n"
-
-      # Toggle sketchybar
-      shift + lalt - space : sketchybar --bar hidden=toggle
-      shift + lalt - r :  sketchybar --reload
-    '';
-  };
-
-  # skhd runs hotkey commands through $SHELL; without this launchd leaves SHELL
-  # unset and skhd falls back to /bin/bash, which breaks the zsh array syntax
-  # ($SPACES[1]) used by the space focus/move bindings above.
-  launchd.user.agents.skhd.serviceConfig.EnvironmentVariables.SHELL = "${pkgs.zsh}/bin/zsh";
-
-  services.jankyborders = {
-    enable = true;
+    # Split so SIP-on hosts can swap only the space bindings (modules/pentest).
+    skhdConfig =
+      builtins.readFile ./config/skhd/skhdrc-spaces
+      + builtins.readFile ./config/skhd/skhdrc-common;
   };
 
   homebrew = {
-    enable = true;
-    onActivation = {
-      autoUpdate = true;
-      upgrade = true;
-    };
-
-    brews = pkgs.callPackage ./brews.nix {};
-    casks = pkgs.callPackage ./casks.nix {};
-    onActivation.cleanup = "uninstall";
+    brews = pkgs.callPackage ./brews.nix { };
+    casks = pkgs.callPackage ./casks.nix { };
 
     # These app IDs are from using the mas CLI app
     # mas = mac app store
@@ -173,65 +50,5 @@ in
     };
   };
 
-  # Enable home-manager
-  home-manager = {
-    useGlobalPkgs = true;
-    users.${user} = { pkgs, config, lib, ... }:
-      let
-        # AI-skill CLIs + their Claude Code setup steps. Add new tools here.
-        aiSkills = pkgs.callPackage ../shared/ai-skills.nix {};
-
-        # Emit a PATH-guarded, dry-run-aware shell snippet for one command.
-        guard = bin: run: ''
-          if command -v ${bin} >/dev/null 2>&1; then
-            $DRY_RUN_CMD ${run}
-          else
-            echo "${bin} not found in PATH; skipping: ${run}"
-          fi
-        '';
-      in {
-      home = {
-        enableNixpkgsReleaseCheck = false;
-        packages = pkgs.callPackage ./packages.nix {};
-        file = additionalFiles;
-
-        stateVersion = "23.11";
-
-        # Install pinned global npm CLIs, then run each tool's Claude Code setup.
-        # Everything is data-driven from ../shared/ai-skills.nix — add tools there.
-        activation.aiSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] (
-          # /opt/homebrew/bin for brew-installed CLIs (node/npx); pkgs.git so the
-          # `skills` CLI's internal `spawn git` resolves (else: spawn git ENOENT).
-          ''export PATH="/opt/homebrew/bin:${lib.makeBinPath [ pkgs.git ]}:$PATH"''
-          + lib.optionalString (aiSkills.globals != [])
-              ("\n" + guard "npm" "npm install -g ${lib.concatStringsSep " " aiSkills.globals}")
-          + lib.concatMapStrings (s: "\n" + guard s.bin s.run) aiSkills.setup
-        );
-      };
-      programs = {
-
-      } // import ../shared/home-manager.nix { inherit config pkgs lib; };
-
-      manual.manpages.enable = false;
-      catppuccin.flavor = "mocha";
-      catppuccin.autoEnable = true;
-      catppuccin.enable = true;
-      imports = [
-        catppuccin.homeModules.catppuccin
-      ];
-    };
-  };
-
-  # Fully declarative dock using the latest from Nix Store
-  local.dock.enable = true;
-  local.dock.username = user;
-  local.dock.entries = [
-    { path = "${pkgs.kitty}/Applications/Kitty.app/"; }
-    {
-      path = "${config.users.users.${user}.home}/.local/share/downloads";
-      section = "others";
-      options = "--sort name --view grid --display stack";
-    }
-  ];
-
+  home-manager.users.${user}.home.packages = pkgs.callPackage ./packages.nix { };
 }

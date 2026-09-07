@@ -22,7 +22,6 @@ _:
 "claude-code@latest"
 "codex"
 "codex-app"
-"antigravity"
 "steipete/tap/codexbar"
 
 ### Fonts
@@ -60,10 +59,11 @@ _:
 
 ### Reverse Engineering
 "hex-fiend"
-"machoview"
+#"machoview"
 
 ### Utilities
 "alfred"
+"tailscale-app" # Menu bar app; the brew formula is the headless daemon
 "balenaetcher"
 "desktoppr"
 "downie"

@@ -1,26 +1,15 @@
-{ config, pkgs, lib, home-manager, catppuccin, ... }:
+{ pkgs, ... }:
 
-let
-  user = "schni";
-  additionalFiles = import ./files.nix { inherit user config pkgs; };
-in
+# Daily driver. Shared user plumbing (account, sketchybar, borders, homebrew
+# policy, home-manager wiring, dock) comes from ./home-base.nix; this file
+# holds what is specific to this machine: the SIP-off yabai/skhd config and
+# the package, brew, cask and App Store lists.
+
+let user = "schni"; in
 {
   imports = [
-   ./dock
+    ./home-base.nix
   ];
-
-  # It me
-  users.users.${user} = {
-    name = "${user}";
-    home = "/Users/${user}";
-    isHidden = false;
-    shell = pkgs.zsh;
-  };
-
-  # Services
-  services.sketchybar = {
-    enable = true;
-  };
 
   services.yabai = {
     enable = true;
@@ -34,40 +23,15 @@ in
     enable = true;
     # https://github.com/koekeishiya/skhd/blob/master/examples/skhdrc
     # https://github.com/koekeishiya/skhd/issues/1
-    # Split so SIP-on hosts can swap only the space bindings (hosts/pentest).
+    # Split so SIP-on hosts can swap only the space bindings (modules/pentest).
     skhdConfig =
       builtins.readFile ./config/skhd/skhdrc-spaces
       + builtins.readFile ./config/skhd/skhdrc-common;
   };
 
-  # skhd runs hotkey commands through $SHELL; without this launchd leaves SHELL
-  # unset and skhd falls back to /bin/bash, which breaks the zsh array syntax
-  # ($SPACES[1]) used by the space focus/move bindings above.
-  launchd.user.agents.skhd.serviceConfig.EnvironmentVariables.SHELL = "${pkgs.zsh}/bin/zsh";
-
-  services.jankyborders = {
-    enable = true;
-  };
-
   homebrew = {
-    enable = true;
-    onActivation = {
-      autoUpdate = true;
-      upgrade = true;
-    };
-
-    brews = pkgs.callPackage ./brews.nix {};
-    casks = pkgs.callPackage ./casks.nix {};
-    onActivation.cleanup = "uninstall";
-
-    # nix-homebrew owns the taps (mutableTaps = false in flake.nix), so this
-    # module's generated Brewfile lists none of them. Combined with the cleanup
-    # above that means every `brew bundle --force-cleanup` during activation
-    # tries to untap homebrew/cask and homebrew/bundle -- which either fails
-    # against the read-only nix-homebrew tap dirs or leaves brew unable to
-    # resolve a single cask afterwards. Mirroring nix-homebrew's tap set into
-    # the Brewfile makes cleanup treat them as declared and leave them alone.
-    taps = builtins.attrNames config.nix-homebrew.taps;
+    brews = pkgs.callPackage ./brews.nix { };
+    casks = pkgs.callPackage ./casks.nix { };
 
     # These app IDs are from using the mas CLI app
     # mas = mac app store
@@ -86,65 +50,5 @@ in
     };
   };
 
-  # Enable home-manager
-  home-manager = {
-    useGlobalPkgs = true;
-    users.${user} = { pkgs, config, lib, ... }:
-      let
-        # AI-skill CLIs + their Claude Code setup steps. Add new tools here.
-        aiSkills = pkgs.callPackage ../shared/ai-skills.nix {};
-
-        # Emit a PATH-guarded, dry-run-aware shell snippet for one command.
-        guard = bin: run: ''
-          if command -v ${bin} >/dev/null 2>&1; then
-            $DRY_RUN_CMD ${run}
-          else
-            echo "${bin} not found in PATH; skipping: ${run}"
-          fi
-        '';
-      in {
-      home = {
-        enableNixpkgsReleaseCheck = false;
-        packages = pkgs.callPackage ./packages.nix {};
-        file = additionalFiles;
-
-        stateVersion = "23.11";
-
-        # Install pinned global npm CLIs, then run each tool's Claude Code setup.
-        # Everything is data-driven from ../shared/ai-skills.nix — add tools there.
-        activation.aiSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] (
-          # /opt/homebrew/bin for brew-installed CLIs (node/npx); pkgs.git so the
-          # `skills` CLI's internal `spawn git` resolves (else: spawn git ENOENT).
-          ''export PATH="/opt/homebrew/bin:${lib.makeBinPath [ pkgs.git ]}:$PATH"''
-          + lib.optionalString (aiSkills.globals != [])
-              ("\n" + guard "npm" "npm install -g ${lib.concatStringsSep " " aiSkills.globals}")
-          + lib.concatMapStrings (s: "\n" + guard s.bin s.run) aiSkills.setup
-        );
-      };
-      programs = {
-
-      } // import ../shared/home-manager.nix { inherit config pkgs lib; };
-
-      manual.manpages.enable = false;
-      catppuccin.flavor = "mocha";
-      catppuccin.autoEnable = true;
-      catppuccin.enable = true;
-      imports = [
-        catppuccin.homeModules.catppuccin
-      ];
-    };
-  };
-
-  # Fully declarative dock using the latest from Nix Store
-  local.dock.enable = true;
-  local.dock.username = user;
-  local.dock.entries = [
-    { path = "${pkgs.kitty}/Applications/Kitty.app/"; }
-    {
-      path = "${config.users.users.${user}.home}/.local/share/downloads";
-      section = "others";
-      options = "--sort name --view grid --display stack";
-    }
-  ];
-
+  home-manager.users.${user}.home.packages = pkgs.callPackage ./packages.nix { };
 }

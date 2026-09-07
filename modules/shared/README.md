@@ -1,16 +1,15 @@
 ## Shared
-Much of the code running on MacOS or NixOS is actually found here.
+Config that every host in this repo uses, macOS or Linux.
 
-This configuration gets imported by both modules. Some configuration examples include `git`, `zsh`, `vim`, and `tmux`.
+`default.nix` is imported by each host; `home-manager.nix` and `packages.nix`
+are pulled in by the per-platform home-manager modules.
 
 ## Layout
 ```
 .
-├── config             # Config files not written in Nix
-├── cachix             # Defines cachix, a global cache for builds
-├── default.nix        # Defines how we import overlays 
-├── files.nix          # Non-Nix, static configuration files (now immutable!)
-├── home-manager.nix   # The goods; most all shared config lives here
-├── packages.nix       # List of packages to share
-
+├── config             # Config files not written in Nix (p10k)
+├── ai-skills.nix      # Data: npm CLIs and Claude Code setup steps run at activation
+├── default.nix        # nixpkgs config and how overlays/ is loaded
+├── home-manager.nix   # Shared programs: zsh, git, kitty, fzf, ssh, direnv, ...
+├── packages.nix       # Cross-platform CLI packages
 ```

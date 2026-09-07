@@ -3,7 +3,7 @@
 # Daily-driver yabai config: SIP is (partially) disabled, so the scripting
 # addition loads and space control / opacity / animations are available.
 # App rules are shared and appended from ./rules; SIP-on hosts swap this file
-# (see hosts/pentest/yabairc).
+# (see modules/pentest/config/yabai/yabairc).
 
 yabai -m config layout bsp
 

@@ -1,5 +1,5 @@
 ## Space control (requires the yabai scripting addition, i.e. SIP disabled).
-## Hosts with SIP enabled replace this file — see hosts/pentest/skhdrc-spaces.
+## Hosts with SIP enabled replace this file — see modules/pentest/config/skhd/skhdrc-spaces.
 
 # Create a new space: lalt + n
 lalt - n : yabai -m space --create; yabai -m space --focus last

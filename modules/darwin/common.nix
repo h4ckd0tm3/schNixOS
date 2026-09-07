@@ -3,7 +3,7 @@
 # System-level config shared by every macOS host (hosts/darwin, hosts/pentest):
 # nix daemon settings, GC/optimise schedule, fonts, macOS defaults and the
 # post-activation script. Hosts add only what is genuinely theirs (hostname,
-# Touch ID, screensaver, wallpaper).
+# screensaver, wallpaper).
 
 let user = "schni"; in
 
@@ -14,6 +14,9 @@ let user = "schni"; in
   };
 
   config = {
+    # Constant sudo on both machines. Touch ID beats retyping the password.
+    security.pam.services.sudo_local.touchIdAuth = true;
+
     nix = {
       settings = {
         trusted-users = [ "@admin" user ];

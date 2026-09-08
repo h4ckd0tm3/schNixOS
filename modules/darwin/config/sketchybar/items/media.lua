@@ -1,16 +1,20 @@
 local icons = require("icons")
 local colors = require("colors")
 
-local whitelist = { ["Spotify"] = true,
-                    ["Music"] = true    };
+local whitelist = { ["com.spotify.client"] = true,
+                    ["com.apple.Music"] = true    };
+
+-- media-control replaces nowplaying-cli and the built-in media_change event,
+-- both dead since macOS 15.4; see helpers/media_stream.sh.
+local media_control = "/opt/homebrew/bin/media-control"
+local artwork = "/tmp/sketchybar_media_artwork"
+sbar.add("event", "media_update")
+sbar.exec("pkill -f 'media-control stream'; $CONFIG_DIR/helpers/media_stream.sh")
 
 local media_cover = sbar.add("item", {
   position = "right",
   background = {
-    image = {
-      string = "media.artwork",
-      scale = 0.85,
-    },
+    image = { scale = 0.85 },
     color = colors.transparent,
   },
   label = { drawing = false },
@@ -57,19 +61,19 @@ sbar.add("item", {
   position = "popup." .. media_cover.name,
   icon = { string = icons.media.back },
   label = { drawing = false },
-  click_script = "nowplaying-cli previous",
+  click_script = media_control .. " previous-track",
 })
 sbar.add("item", {
   position = "popup." .. media_cover.name,
   icon = { string = icons.media.play_pause },
   label = { drawing = false },
-  click_script = "nowplaying-cli togglePlayPause",
+  click_script = media_control .. " toggle-play-pause",
 })
 sbar.add("item", {
   position = "popup." .. media_cover.name,
   icon = { string = icons.media.forward },
   label = { drawing = false },
-  click_script = "nowplaying-cli next",
+  click_script = media_control .. " next-track",
 })
 
 local interrupt = 0
@@ -83,12 +87,12 @@ local function animate_detail(detail)
   end)
 end
 
-media_cover:subscribe("media_change", function(env)
-  if whitelist[env.INFO.app] then
-    local drawing = (env.INFO.state == "playing")
-    media_artist:set({ drawing = drawing, label = env.INFO.artist, })
-    media_title:set({ drawing = drawing, label = env.INFO.title, })
-    media_cover:set({ drawing = drawing })
+media_cover:subscribe("media_update", function(env)
+  if whitelist[env.APP] or env.APP == "" then
+    local drawing = (env.PLAYING == "true")
+    media_artist:set({ drawing = drawing, label = env.ARTIST, })
+    media_title:set({ drawing = drawing, label = env.TITLE, })
+    media_cover:set({ drawing = drawing, background = { image = { string = drawing and artwork or "" } } })
 
     if drawing then
       animate_detail(true)

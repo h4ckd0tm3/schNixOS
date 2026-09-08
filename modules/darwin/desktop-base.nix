@@ -17,7 +17,6 @@ with pkgs; [
   dockutil # Dock management CLI
   skhd # Hotkey daemon
   switchaudio-osx # Audio device switching
-  nowplaying-cli # Media info CLI
 
   ### Programming Languages & Runtimes
   cocoapods # iOS/macOS dependency manager

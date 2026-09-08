@@ -8,7 +8,7 @@ let
   inherit (pkgs) lib;
   helpers = ../config/sketchybar/helpers;
 
-  mkHelper = { name, root, files }:
+  mkHelper = { name, root, files, installPhase ? "install -Dm755 ${name}/bin/${name} $out/bin/${name}" }:
     pkgs.stdenv.mkDerivation {
       pname = name;
       version = "1.0";
@@ -19,7 +19,7 @@ let
       nativeBuildInputs = [ pkgs.clang pkgs.gnumake ];
       dontConfigure = true;
       buildPhase = "make -C ${name}";
-      installPhase = "install -Dm755 ${name}/bin/${name} $out/bin/${name}";
+      inherit installPhase;
       meta = {
         platforms = lib.platforms.darwin;
         mainProgram = name;
@@ -44,5 +44,13 @@ in
     name = "menus";
     root = helpers;
     files = [ (helpers + "/menus") ];
+  };
+
+  # An .app bundle, not a bare binary: CoreLocation only prompts for those.
+  wifiSsidApp = mkHelper {
+    name = "wifi_ssid";
+    root = helpers;
+    files = [ (helpers + "/wifi_ssid") ];
+    installPhase = "mkdir -p $out && cp -r wifi_ssid/bin/wifi_ssid.app $out/";
   };
 }

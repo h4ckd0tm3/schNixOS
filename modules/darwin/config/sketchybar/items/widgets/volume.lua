@@ -101,7 +101,7 @@ end
 local current_audio_device = "None"
 local function volume_toggle_details(env)
   if env.BUTTON == "right" then
-    sbar.exec("open /System/Library/PreferencePanes/Sound.prefpane")
+    sbar.exec("open x-apple.systempreferences:com.apple.Sound-Settings.extension")
     return
   end
 

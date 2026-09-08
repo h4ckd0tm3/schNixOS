@@ -10,6 +10,7 @@ _:
 
 ### Utilities
 "mas" # Mac App Store CLI
+"media-control" # now-playing info for the sketchybar media widget
 "navi" # Interactive cheatsheet tool
 
 "azure-cli"

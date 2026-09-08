@@ -29,7 +29,7 @@ in
     enable = true;
     # The agent's PATH is only this list plus environment.systemPath; the
     # volume and media widgets shell out to these.
-    extraPackages = with pkgs; [ switchaudio-osx nowplaying-cli jq ];
+    extraPackages = with pkgs; [ switchaudio-osx jq ];
   };
 
   services.jankyborders = {

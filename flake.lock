@@ -134,11 +134,11 @@
     "homebrew-notime-tap": {
       "flake": false,
       "locked": {
-        "lastModified": 1788873285,
-        "narHash": "sha256-26WMgHTFRX8FBcZrqVU1XOCNYg5Iac4Gk0DH7/7ML4w=",
+        "lastModified": 1788878819,
+        "narHash": "sha256-PtjrIqmelieGRZKkrlxucwEIueCyuklXZ8RW/lsSKiY=",
         "ref": "refs/heads/main",
-        "rev": "90bd4468408c9aaffa9415e4ba52965b853d6138",
-        "revCount": 10,
+        "rev": "658e6817d4a8f7791c841b69e954432d39d7a3b1",
+        "revCount": 13,
         "type": "git",
         "url": "ssh://git@github.com/Adversary-GmbH/noTime.git"
       },

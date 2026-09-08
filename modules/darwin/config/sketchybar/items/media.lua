@@ -14,7 +14,7 @@ sbar.exec("pkill -f 'media-control stream'; $CONFIG_DIR/helpers/media_stream.sh"
 local media_cover = sbar.add("item", {
   position = "right",
   background = {
-    image = { scale = 0.85 },
+    image = { scale = 0.5 }, -- artwork is pre-shrunk to 64px by media_stream.sh
     color = colors.transparent,
   },
   label = { drawing = false },

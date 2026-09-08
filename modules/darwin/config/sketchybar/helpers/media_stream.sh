@@ -6,6 +6,7 @@
 ART=/tmp/sketchybar_media_artwork
 /opt/homebrew/bin/media-control stream --no-diff --debounce=250 | while IFS= read -r line; do
   printf '%s' "$line" | jq -r '.payload.artworkData // empty' | base64 -d > "$ART" 2>/dev/null
-  [ -s "$ART" ] || rm -f "$ART"
+  # Covers come at 600px+; shrink to 64px (drawn at scale 0.5 = 32pt, crisp on retina).
+  [ -s "$ART" ] && sips -Z 64 "$ART" >/dev/null 2>&1 || rm -f "$ART"
   eval "$(printf '%s' "$line" | jq -r '.payload | @sh "sketchybar --trigger media_update APP=\(.bundleIdentifier // "") PLAYING=\(.playing // false) ARTIST=\(.artist // "") TITLE=\(.title // "")"')"
 done

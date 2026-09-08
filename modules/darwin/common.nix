@@ -3,7 +3,7 @@
 # System-level config shared by every macOS host (hosts/darwin, hosts/pentest):
 # nix daemon settings, GC/optimise schedule, fonts, macOS defaults and the
 # post-activation script. Hosts add only what is genuinely theirs (hostname,
-# screensaver, wallpaper).
+# wallpaper).
 
 let user = "schni"; in
 
@@ -51,6 +51,12 @@ let user = "schni"; in
       stateVersion = 5;
 
       defaults = {
+        # Require the password immediately on lock, no grace period.
+        screensaver = {
+          askForPassword = true;
+          askForPasswordDelay = 0;
+        };
+
         NSGlobalDomain = {
           AppleShowAllExtensions = true;
           ApplePressAndHoldEnabled = false;

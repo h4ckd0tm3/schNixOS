@@ -9,7 +9,7 @@ local whitelist = { ["com.spotify.client"] = true,
 local media_control = "/opt/homebrew/bin/media-control"
 local artwork = "/tmp/sketchybar_media_artwork"
 sbar.add("event", "media_update")
-sbar.exec("pkill -f 'media-control stream'; $CONFIG_DIR/helpers/media_stream.sh")
+sbar.exec("$CONFIG_DIR/helpers/media_stream.sh")
 
 local media_cover = sbar.add("item", {
   position = "right",

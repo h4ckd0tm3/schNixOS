@@ -36,9 +36,14 @@
       url = "github:steipete/homebrew-tap";
       flake = false;
     };
+    # Private tap (Adversary-GmbH/noTime) -> fetched over SSH, needs the deploy key of the host
+    homebrew-notime-tap = {
+      url = "git+ssh://git@github.com/Adversary-GmbH/noTime.git";
+      flake = false;
+    };
   };
 
-  outputs = { self, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-steipete-tap, home-manager, nixpkgs, ... } @inputs:
+  outputs = { self, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-steipete-tap, homebrew-notime-tap, home-manager, nixpkgs, ... } @inputs:
     let
       user = "schni";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
@@ -97,7 +102,11 @@
 
         # Pentest MacBook (Apple Silicon).
         # Switch with: FLAKE_HOST=pentest nix run .#build-switch
-        pentest = mkDarwin "aarch64-darwin" [ ./hosts/pentest ];
+        pentest = mkDarwin "aarch64-darwin" [
+          ./hosts/pentest
+          # Private tap (Adversary-GmbH/noTime), only tapped on the pentest host.
+          { nix-homebrew.taps."adversary-gmbh/homebrew-notime" = homebrew-notime-tap; }
+        ];
       };
 
       wslConfigurations = nixpkgs.lib.genAttrs linuxSystems (system:

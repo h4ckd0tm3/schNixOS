@@ -131,6 +131,22 @@
         "type": "github"
       }
     },
+    "homebrew-notime-tap": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788873285,
+        "narHash": "sha256-26WMgHTFRX8FBcZrqVU1XOCNYg5Iac4Gk0DH7/7ML4w=",
+        "ref": "refs/heads/main",
+        "rev": "90bd4468408c9aaffa9415e4ba52965b853d6138",
+        "revCount": 10,
+        "type": "git",
+        "url": "ssh://git@github.com/Adversary-GmbH/noTime.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/Adversary-GmbH/noTime.git"
+      }
+    },
     "homebrew-steipete-tap": {
       "flake": false,
       "locked": {
@@ -209,6 +225,7 @@
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
+        "homebrew-notime-tap": "homebrew-notime-tap",
         "homebrew-steipete-tap": "homebrew-steipete-tap",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs",

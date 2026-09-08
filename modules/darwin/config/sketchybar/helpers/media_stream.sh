@@ -5,8 +5,10 @@
 # /opt/homebrew/bin is not on the sketchybar agent's PATH, hence the full path.
 ART=/tmp/sketchybar_media_artwork
 /opt/homebrew/bin/media-control stream --no-diff --debounce=250 | while IFS= read -r line; do
-  printf '%s' "$line" | jq -r '.payload.artworkData // empty' | base64 -d > "$ART" 2>/dev/null
-  # Covers come at 600px+; shrink to 64px (drawn at scale 0.5 = 32pt, crisp on retina).
-  [ -s "$ART" ] && sips -Z 64 "$ART" >/dev/null 2>&1 || rm -f "$ART"
+  # Covers come at 600px+; shrink to 64px (drawn at scale 0.5 = 32pt, crisp on
+  # retina). Decode and resize a temp file, then mv it into place so the bar never
+  # redraws a half-written or still full-size file.
+  printf '%s' "$line" | jq -r '.payload.artworkData // empty' | base64 -d > "$ART.tmp" 2>/dev/null
+  if [ -s "$ART.tmp" ] && sips -Z 64 "$ART.tmp" >/dev/null 2>&1; then mv -f "$ART.tmp" "$ART"; else rm -f "$ART" "$ART.tmp"; fi
   eval "$(printf '%s' "$line" | jq -r '.payload | @sh "sketchybar --trigger media_update APP=\(.bundleIdentifier // "") PLAYING=\(.playing // false) ARTIST=\(.artist // "") TITLE=\(.title // "")"')"
 done

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>at.schnideritsch.sketchybar.wifi_ssid</string>
+	<key>CFBundleName</key>
+	<string>wifi_ssid</string>
+	<key>CFBundleExecutable</key>
+	<string>wifi_ssid</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>LSUIElement</key>
+	<true/>
+	<key>NSLocationUsageDescription</key>
+	<string>Needed to read the current Wi-Fi network name for the sketchybar Wi-Fi popup.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Needed to read the current Wi-Fi network name for the sketchybar Wi-Fi popup.</string>
+</dict>
+</plist>

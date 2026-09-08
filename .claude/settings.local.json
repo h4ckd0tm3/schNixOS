@@ -29,7 +29,13 @@
       "Bash(git push *)",
       "Bash(brew tap *)",
       "Bash(brew list *)",
-      "Bash(nix log *)"
+      "Bash(nix log *)",
+      "Bash(yabai -m --version)",
+      "Bash(csrutil status *)",
+      "Read(//private/etc/sudoers.d/**)",
+      "Bash(sudo -n grep -rh yabai /etc/sudoers.d/ /etc/sudoers)",
+      "Bash(sudo -n yabai --load-sa)",
+      "Bash(echo \"exit=$?\")"
     ]
   }
 }

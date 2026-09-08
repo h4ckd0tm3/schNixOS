@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 # Daily driver. Shared user plumbing (account, sketchybar, borders, homebrew
 # policy, home-manager wiring, dock) comes from ./home-base.nix; this file
@@ -14,8 +14,15 @@ let user = "schni"; in
   services.yabai = {
     enable = true;
     enableScriptingAddition = true;
+    # The sudoers rule nix-darwin writes pins the absolute store path, and sudo
+    # matches it as a string — a bare `sudo yabai` resolves via PATH to
+    # /run/current-system/sw/bin/yabai, does not match, and fails with "a
+    # password is required". Point the load-sa calls at the same store path.
     extraConfig =
-      builtins.readFile ./config/yabai/yabairc
+      builtins.replaceStrings
+        [ "sudo yabai --load-sa" ]
+        [ "sudo ${config.services.yabai.package}/bin/yabai --load-sa" ]
+        (builtins.readFile ./config/yabai/yabairc)
       + builtins.readFile ./config/yabai/rules;
   };
 
@@ -45,7 +52,8 @@ let user = "schni"; in
     # This message is safe to ignore. (https://github.com/dustinlyons/nixos-config/issues/83)
     masApps = {
       "wireguard" = 1451685025;
-      "xcode" = 497799835;
+      # Xcode is installed outside the App Store (no _MASReceipt), so a mas
+      # entry is never "satisfied" and every rebuild tries to install it again.
       "Windows App" = 1295203466;
     };
   };

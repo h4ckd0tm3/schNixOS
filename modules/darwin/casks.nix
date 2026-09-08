@@ -30,6 +30,7 @@ _:
 "font-jetbrains-mono"
 "font-noto-sans"
 "sf-symbols"
+"font-sf-mono" # settings.font.numbers in sketchybar
 "font-fontawesome"
 
 ### Password Management
@@ -68,6 +69,7 @@ _:
 "desktoppr"
 "downie"
 "logi-options+"
+"nordvpn"
 "rize"
 "wifiman"
 

@@ -13,6 +13,11 @@ self: super: {
     };
     # versionCheckHook would compare against the git version string; skip it.
     doInstallCheck = false;
+    # macOS 26.6: SLSBridgedMoveWindowsToManagedSpaceOperation (yabai's
+    # preferred window-to-space path on 15+) silently does nothing, while
+    # SLSMoveWindowsToManagedSpace called from inside Dock via the scripting
+    # addition still works. Try the SA first; SA-less hosts fall through.
+    patches = (old.patches or [ ]) ++ [ ./yabai-sa-move-first.patch ];
     # nixpkgs links the scripting addition with -Wl,-no_uuid; dyld on macOS
     # 26.6 refuses to dlopen a dylib with no LC_UUID ("missing LC_UUID load
     # command"), so the payload never runs inside Dock. Strip the flag.

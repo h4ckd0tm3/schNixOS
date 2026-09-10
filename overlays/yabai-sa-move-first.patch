@@ -1,0 +1,26 @@
+diff --git a/src/space_manager.c b/src/space_manager.c
+index f8215b3..fc2e19e 100644
+--- a/src/space_manager.c
++++ b/src/space_manager.c
+@@ -664,7 +664,9 @@ uint64_t space_manager_active_space(void)
+ 
+ void space_manager_move_window_list_to_space(uint64_t sid, uint32_t *window_list, int window_count)
+ {
+-    if (SLSPerformAsynchronousBridgedWindowManagementOperation) {
++    if (workspace_use_macos_space_workaround() && scripting_addition_move_window_list_to_space(sid, window_list, window_count)) {
++        // macOS 26.6: the bridged operation silently no-ops; the SA path still works.
++    } else if (SLSPerformAsynchronousBridgedWindowManagementOperation) {
+         CFArrayRef window_list_ref = cfarray_of_cfnumbers(window_list, sizeof(uint32_t), window_count, kCFNumberSInt32Type);
+         Class cls = objc_getClass("SLSBridgedMoveWindowsToManagedSpaceOperation");
+         SEL sel = sel_registerName("initWithWindows:spaceID:");
+@@ -685,7 +687,9 @@ void space_manager_move_window_list_to_space(uint64_t sid, uint32_t *window_list
+ 
+ void space_manager_move_window_to_space(uint64_t sid, struct window *window)
+ {
+-    if (SLSPerformAsynchronousBridgedWindowManagementOperation) {
++    if (workspace_use_macos_space_workaround() && scripting_addition_move_window_to_space(sid, window->id)) {
++        // macOS 26.6: the bridged operation silently no-ops; the SA path still works.
++    } else if (SLSPerformAsynchronousBridgedWindowManagementOperation) {
+         CFArrayRef window_list_ref = cfarray_of_cfnumbers(&window->id, sizeof(uint32_t), 1, kCFNumberSInt32Type);
+         Class cls = objc_getClass("SLSBridgedMoveWindowsToManagedSpaceOperation");
+         SEL sel = sel_registerName("initWithWindows:spaceID:");

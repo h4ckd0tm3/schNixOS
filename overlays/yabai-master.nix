@@ -13,5 +13,11 @@ self: super: {
     };
     # versionCheckHook would compare against the git version string; skip it.
     doInstallCheck = false;
+    # nixpkgs links the scripting addition with -Wl,-no_uuid; dyld on macOS
+    # 26.6 refuses to dlopen a dylib with no LC_UUID ("missing LC_UUID load
+    # command"), so the payload never runs inside Dock. Strip the flag.
+    postPatch = old.postPatch + ''
+      substituteInPlace makefile --replace-fail "-Wl,-no_uuid" ""
+    '';
   });
 }

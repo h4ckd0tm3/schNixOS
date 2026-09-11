@@ -16,6 +16,10 @@ _:
     # GSD (get-shit-done): one-time installer, kept current via @latest
     { bin = "npx"; run = "npx --yes @opengsd/gsd-core@latest --claude --global"; }
     # Anthropic Cybersecurity Skills, installed via the `skills` CLI
-    { bin = "npx"; run = "npx --yes skills add mukul975/Anthropic-Cybersecurity-Skills"; }
+    #{ bin = "npx"; run = "npx --yes skills add mukul975/Anthropic-Cybersecurity-Skills"; }
+    # i-have-adhd (ADHD-friendly output style): plugin for Claude Code and Codex.
+    # Marketplace add + install are idempotent; invoke via /i-have-adhd or $i-have-adhd.
+    { bin = "claude"; run = "sh -c 'claude plugin marketplace add ayghri/i-have-adhd && claude plugin install i-have-adhd@i-have-adhd'"; }
+    { bin = "codex"; run = "sh -c 'codex plugin marketplace add ayghri/i-have-adhd --ref main && codex plugin add i-have-adhd@i-have-adhd'"; }
   ];
 }

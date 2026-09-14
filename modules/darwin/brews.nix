@@ -5,9 +5,6 @@ _:
 "gh" # GitHub CLI
 "uv" # Python package installer
 
-### Security & Code Analysis
-"semgrep" # Static analysis tool
-
 ### Utilities
 "mas" # Mac App Store CLI
 "media-control" # now-playing info for the sketchybar media widget

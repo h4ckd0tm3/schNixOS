@@ -8,4 +8,7 @@ let
   shared-packages = import ../shared/packages.nix { inherit pkgs; };
   desktop-base = import ./desktop-base.nix { inherit pkgs; };
 in
-shared-packages ++ desktop-base
+shared-packages ++ desktop-base ++ (with pkgs; [
+  ### Code Analysis
+  opengrep # Semgrep-compatible SAST (overlays/opengrep.nix)
+])

@@ -97,12 +97,17 @@ in
 
           stateVersion = "23.11";
 
+          # Nix-packaged AI-skill CLIs; merged with the host's own package list.
+          packages = aiSkills.packages;
+
           # Install pinned global npm CLIs, then run each tool's Claude Code
           # setup. Everything is data-driven from ../shared/ai-skills.nix.
           activation.aiSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] (
             # /opt/homebrew/bin for brew-installed CLIs (node/npx); pkgs.git so the
-            # `skills` CLI's internal `spawn git` resolves (else: spawn git ENOENT).
-            ''export PATH="/opt/homebrew/bin:${lib.makeBinPath [ pkgs.git ]}:$PATH"''
+            # `skills` CLI's internal `spawn git` resolves (else: spawn git ENOENT);
+            # aiSkills.packages so their setup steps find the binary regardless of
+            # the PATH the activation runs with.
+            ''export PATH="/opt/homebrew/bin:${lib.makeBinPath ([ pkgs.git ] ++ aiSkills.packages)}:$PATH"''
             + lib.optionalString (aiSkills.globals != [ ])
               ("\n" + guard "npm" "npm install -g ${lib.concatStringsSep " " aiSkills.globals}")
             + lib.concatMapStrings (s: "\n" + guard s.bin s.run) aiSkills.setup

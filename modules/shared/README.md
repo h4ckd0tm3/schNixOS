@@ -8,7 +8,7 @@ are pulled in by the per-platform home-manager modules.
 ```
 .
 ├── config             # Config files not written in Nix (p10k)
-├── ai-skills.nix      # Data: npm CLIs and Claude Code setup steps run at activation
+├── ai-skills.nix      # Data: nix/npm AI-skill CLIs and their Claude Code/Codex setup steps run at activation
 ├── default.nix        # nixpkgs config and how overlays/ is loaded
 ├── home-manager.nix   # Shared programs: zsh, git, kitty, fzf, ssh, direnv, ...
 ├── packages.nix       # Cross-platform CLI packages

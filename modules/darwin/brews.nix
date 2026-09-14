@@ -21,4 +21,7 @@ _:
 "bun" # JavaScript runtime & package manager (homebrew-core)
 "opencode" # AI coding agent built for the terminal
 "llama.cpp" # LLM inference in C/C++
+# nixpkgs builds mlx with MLX_BUILD_METAL=false (the metal compiler is closed source),
+# so the brew bottle is the only way to get GPU inference on Apple Silicon.
+"mlx-lm" # Run LLMs with Apple MLX (mlx_lm.generate / mlx_lm.server)
 ]

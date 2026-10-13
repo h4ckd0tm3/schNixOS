@@ -11,5 +11,13 @@
     ../../modules/shared
   ];
 
+  # Togusa — Section 9's least-augmented member; the everyday counterpart to
+  # the pentest box (kusanagi).
+  networking = {
+    computerName = "togusa";
+    hostName = "togusa";
+    localHostName = "togusa";
+  };
+
   local.wallpaper = "${self}/hosts/wallpapers/mostwanted.png";
 }

@@ -54,7 +54,7 @@ _:
 "adobe-creative-cloud"
 
 ### Pentesting & Security
-"burp-suite-professional"
+"caido"
 #"ngrok"
 "redis-insight"
 

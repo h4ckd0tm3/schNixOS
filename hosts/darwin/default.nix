@@ -19,5 +19,5 @@
     localHostName = "togusa";
   };
 
-  local.wallpaper = "${self}/hosts/wallpapers/mostwanted.png";
+  local.wallpaper = "${self}/hosts/wallpapers/cyberpunk.jpg";
 }

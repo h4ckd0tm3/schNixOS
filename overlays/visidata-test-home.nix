@@ -8,8 +8,8 @@
 # 2. test-vdx.sh points XDG_DATA_HOME at tests/xdg/data to supply the macro
 #    fixtures, but visidata ignores XDG on Darwin, so macro-param-col-nosave
 #    finds no "sort-by-col" macro. Link the macOS path at the same fixtures.
-# 3. test-vdx.sh writes the nosave batch log to a hardcoded /tmp path, which
-#    the sandbox denies; that fails nosave-batch on its own.
+# 3. tests/testenv.sh creates the shared scratch dir (VD_TESTTMP) under a
+#    hardcoded /tmp, which the sandbox denies. Point it at $TMPDIR instead.
 #
 # The hook is preCheck, not preInstallCheck: the package replaces
 # installCheckPhase outright and only fires runHook preCheck/postCheck inside
@@ -20,8 +20,8 @@ self: super: {
       export HOME=$(mktemp -d)
       mkdir -p "$HOME/Library/Application Support"
       ln -s "$PWD/tests/xdg/data/visidata" "$HOME/Library/Application Support/visidata"
-      substituteInPlace tests/test-vdx.sh \
-        --replace-fail /tmp/vd-nosave-output.txt "$TMPDIR/vd-nosave-output.txt"
+      substituteInPlace tests/testenv.sh \
+        --replace-fail '"/tmp/vd-tests-' '"$TMPDIR/vd-tests-'
     '';
   });
 }

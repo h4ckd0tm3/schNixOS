@@ -21,6 +21,13 @@
     };
     nix-homebrew = {
       url = "github:zhaofengli/nix-homebrew";
+      inputs.brew-src.follows = "brew-src";
+    };
+    # nix-homebrew's own brew pin lags behind; the tap definitions below track
+    # HEAD and break on old brew ("invalid 'zap' stanza"), so pin brew here.
+    brew-src = {
+      url = "github:Homebrew/brew/7.0.11";
+      flake = false;
     };
     # `brew bundle` ships inside brew itself since 2025; the separate
     # homebrew/homebrew-bundle tap is archived and no longer needed.

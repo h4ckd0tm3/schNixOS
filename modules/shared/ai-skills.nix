@@ -22,6 +22,12 @@
     { bin = "uipro"; run = "sh -c 'cd $HOME && uipro init --ai claude'"; }
     # GSD (get-shit-done): one-time installer, kept current via @latest
     { bin = "npx"; run = "npx --yes @opengsd/gsd-core@latest --claude --global"; }
+    # antislop (npx antislop-ai needs a TTY, so pull its repo via the `skills` CLI)
+    # and taste-skill (design-taste-frontend). Global, non-interactive.
+    { bin = "npx"; run = "npx --yes skills add miqdadbadjuber/anti-slop -g -y -a claude-code codex --skill '*'"; }
+    { bin = "npx"; run = "npx --yes skills add Leonxlnx/taste-skill -g -y -a claude-code codex --skill '*'"; }
+    # Emil Kowalski's skills (https://github.com/emilkowalski/skills)
+    { bin = "npx"; run = "npx --yes skills add emilkowalski/skills -g -y -a claude-code codex --skill '*'"; }
     # Anthropic Cybersecurity Skills, installed via the `skills` CLI
     #{ bin = "npx"; run = "npx --yes skills add mukul975/Anthropic-Cybersecurity-Skills"; }
     # i-have-adhd (ADHD-friendly output style): plugin for Claude Code and Codex.

@@ -22,7 +22,7 @@
 # Drop this overlay once nixpkgs builds the WebUI itself.
 self: super:
 let
-  webRev = "d26d393468335c599e60a5311ac7fef9fcf738be"; # submodule @ ligolo-ng v0.9.1
+  webRev = "d26d393468335c599e60a5311ac7fef9fcf738be"; # submodule @ ligolo-ng v0.9.1 / v0.9.2 (unchanged)
 
   ligolo-ng-web = super.buildNpmPackage {
     pname = "ligolo-ng-web";

@@ -19,16 +19,10 @@
       url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-homebrew = {
-      url = "github:zhaofengli/nix-homebrew";
-      inputs.brew-src.follows = "brew-src";
-    };
-    # nix-homebrew's own brew pin lags behind; the tap definitions below track
-    # HEAD and break on old brew ("invalid 'zap' stanza"), so pin brew here.
-    brew-src = {
-      url = "github:Homebrew/brew/7.0.11";
-      flake = false;
-    };
+    # nix-homebrew pins brew itself (7.0.11 as of 2026-11). If its pin lags
+    # behind the taps below again ("invalid 'zap' stanza"), re-add a brew-src
+    # input and `inputs.brew-src.follows = "brew-src";` here.
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     # `brew bundle` ships inside brew itself since 2025; the separate
     # homebrew/homebrew-bundle tap is archived and no longer needed.
     homebrew-core = {

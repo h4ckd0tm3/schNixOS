@@ -18,11 +18,5 @@ self: super: {
     # SLSMoveWindowsToManagedSpace called from inside Dock via the scripting
     # addition still works. Try the SA first; SA-less hosts fall through.
     patches = (old.patches or [ ]) ++ [ ./yabai-sa-move-first.patch ];
-    # nixpkgs links the scripting addition with -Wl,-no_uuid; dyld on macOS
-    # 26.6 refuses to dlopen a dylib with no LC_UUID ("missing LC_UUID load
-    # command"), so the payload never runs inside Dock. Strip the flag.
-    postPatch = old.postPatch + ''
-      substituteInPlace makefile --replace-fail "-Wl,-no_uuid" ""
-    '';
   });
 }
